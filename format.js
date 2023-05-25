@@ -1,5 +1,4 @@
 
-
 function normalizardatos(matrix){
   const columnMeans = [];
   for (let col = 0; col < matrix[0].length; col++) {
@@ -31,7 +30,6 @@ function normalizardatos(matrix){
   return matrix;
 }
 
-
 function multiply(a, b) {
   var aNumRows = a.length, aNumCols = Object.values(a[0]).length,
       bNumRows = b.length, bNumCols = Object.values(b[0]).length,
@@ -58,14 +56,22 @@ function multiply(a, b) {
 
 
 
+
 AFRAME.registerComponent('multiply-matrix', {
     schema:{
         archivo: { type:'string',defaul:''},
         matriz: { type: 'string',default:''}  
     },
     init: function(){
+      //cambio altura
+      var geometry = this.el.getAttribute('geometry');
+      geometry.height = 0.04;
+      //fin cambio altura
+
       var  archivo = this.data.archivo;
       var  matriz = this.data.matriz;
+      
+      this.el.setAttribute('geometry', geometry);
       this.el.addEventListener('click', function(){
             var burbujas = document.querySelector('#bubblesrealdata');
             fetch(archivo)
@@ -79,7 +85,6 @@ AFRAME.registerComponent('multiply-matrix', {
                   })
                   .then(function(matrix) {
                     var m  = multiply(archive,matrix);
-                    console.log(m);
                     burbujas.setAttribute('babia-bubbles','data',JSON.stringify(m));
                   });
               });

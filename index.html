@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.5/xlsx.full.min.js"></script>
     <script src="format.js"></script>
+    <!--script src="rotation.js"></script-->
   
   </head>  
   <body>    
@@ -15,53 +16,61 @@
         
         <!-- Environment -->
          <a-entity environment >
-            
+          
             <!-- Bubbles data -->
-            <a-box position="0 0 -10" color="grey" rotation="0 0 0" depth="50" width="50" >
-              <a-entity id="bubblesrealdata" babia-bubbles='legend: true; palette: flat;  radiusMax: 2.5;  heightMax: 50; data:[];
-                x_axis: 0; z_axis: 1; height: 2; radius: 3' position="-20 0.51 -20" rotation="0 0 0"  scale="0.1 0.1 0.1">   
-              </a-entity>
-            </a-box> 
-            
-            <a-entity id="piedescription" position="10 1 16" rotation="-30 0 0">
-              <a-box color="black" height="2" width="2" depth="0.1" position="0 0 0" material="" geometry=""></a-box>
-              <a-box color="white" height="1.8" width="1.8" depth="0.05" position="0 0 0.05" material="" geometry=""></a-box>
-                
+            <!--a-box position="0 0 -10" color="grey" rotation="0 0 0" depth="50" width="50" -->
+            <a-entity id="bubblesrealdata" babia-bubbles='legend: true; palette: flat;  radiusMax: 2.5;  heightMax: 50; data:[];
+              x_axis: 0; z_axis: 1; height: 2; radius: 3' position="-10 25 0" rotation="0 0 0"  scale="0.05 0.05 0.05">   
             </a-entity>
-            <!-- box cereales -->
-            <a-box
-              position="5 0.625 14"
-              color="#6173F4"
-              rotation="0 0 0"
-              depth="1"
-              multiply-matrix="archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"
-              >
-            </a-box>
-            <!-- box olivas -->
-            <a-box
-              position="-5 0.625 14"
-              color="#6173F4"
-              rotation="0 0 0"
-              depth="1"
-              multiply-matrix="archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"
-              >
-            </a-box>
-            <!-- box parkinson -->
-            <a-box
-              position="-15 0.625 14"
-              color="#6173F4"
-              rotation="0 0 0"
-              depth="1"
-              multiply-matrix="archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"
-              >
-            </a-box>
+            <!--</a-box--> 
             
+            <!-- box cereales -->
+            <a-box position="1 27.25 28.5"color ="black" width="1.05" height="0.55" depth="0.02" rotation="-15 0 0">
+              <a-box position="0 0 0.02"color ="#EAE754" width="1" height="0.5" depth="0.02" rotation="0 0 0">
+                
+                <a-box
+                  position="-0.375 0.15 0"
+                  color="#7471EB"
+                  rotation="90 0 0"
+                  height="1"
+                  width="0.125"
+                  depth="0.125"
+                  multiply-matrix="archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"
+                  >
+                </a-box>
+                <a-text position="-0.27 0.15 0.01" value="-   Cereals" color="black" width="2"></a-text>
+                <!-- box olivas -->
+                <a-box
+                  position="-0.375 0 0"
+                  color="#7471EB"
+                  rotation="90 0 0"
+                  heigth="0.25"
+                  width="0.125"
+                  depth="0.125"
+                  multiply-matrix="archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"
+                  >
+                </a-box>
+                <a-text position="-0.27 0 0.01" value="-   Olives" color="black" width="2"></a-text>
+                <!-- box parkinson -->
+                <a-box
+                  position="-0.375 -0.15 0"
+                  color="#7471EB"
+                  rotation="90 0 0"
+                  heigth="0.25"
+                  width="0.125"
+                  depth="0.125"
+                  multiply-matrix="archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"
+                  >
+                </a-box>
+                <a-text position="-0.27 -0.15 0.01" value="-   Parkinson" color="black" width="2"></a-text>
+              </a-box>
+            </a-box>
             <!-- Light -->
             <a-light type="point" intensity="1" position="-10 20 30"></a-light>
         
             <!-- Camera -->
             <a-entity movement-controls="fly: true" position="0 3 25">
-                <a-entity camera position="0 0 5" look-controls></a-entity>
+                <a-entity camera position="0 25 5" look-controls></a-entity>
                 <a-entity cursor="rayOrigin:mouse"></a-entity>
                 <a-entity laser-controls="hand: right"></a-entity>
             </a-entity>
