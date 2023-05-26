@@ -65,7 +65,7 @@ AFRAME.registerComponent('multiply-matrix', {
     init: function(){
       //cambio altura
       var geometry = this.el.getAttribute('geometry');
-      geometry.height = 0.04;
+      geometry.height = 0.1;
       //fin cambio altura
 
       var  archivo = this.data.archivo;

@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.5/xlsx.full.min.js"></script>
     <script src="format.js"></script>
-    <!--script src="rotation.js"></script-->
+    <script src="rotation.js"></script>
   
   </head>  
   <body>    
@@ -18,16 +18,14 @@
          <a-entity environment >
           
             <!-- Bubbles data -->
-            <!--a-box position="0 0 -10" color="grey" rotation="0 0 0" depth="50" width="50" -->
             <a-entity id="bubblesrealdata" babia-bubbles='legend: true; palette: flat;  radiusMax: 2.5;  heightMax: 50; data:[];
-              x_axis: 0; z_axis: 1; height: 2; radius: 3' position="-10 25 0" rotation="0 0 0"  scale="0.05 0.05 0.05">   
+              x_axis: 0; z_axis: 1; height: 2; radius: 3' position="-10 25 0" rotation="0 0 0"  scale="0.05 0.05 0.05" rotate-on-grab>   
             </a-entity>
-            <!--</a-box--> 
             
-            <!-- box cereales -->
-            <a-box position="1 27.25 28.5"color ="black" width="1.05" height="0.55" depth="0.02" rotation="-15 0 0">
+            
+            <a-box position="0 27.25 28.5"color ="black" width="1.05" height="0.55" depth="0.02" rotation="-15 0 0">
               <a-box position="0 0 0.02"color ="#EAE754" width="1" height="0.5" depth="0.02" rotation="0 0 0">
-                
+                <!-- box cereales -->
                 <a-box
                   position="-0.375 0.15 0"
                   color="#7471EB"
@@ -70,6 +68,7 @@
         
             <!-- Camera -->
             <a-entity movement-controls="fly: true" position="0 3 25">
+                <a-entity super-hands></a-entity>
                 <a-entity camera position="0 25 5" look-controls></a-entity>
                 <a-entity cursor="rayOrigin:mouse"></a-entity>
                 <a-entity laser-controls="hand: right"></a-entity>
