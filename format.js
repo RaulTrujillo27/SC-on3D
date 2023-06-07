@@ -33,11 +33,11 @@ function normalizardatos(matrix){
 function multiply(a, b) {
   var aNumRows = a.length, aNumCols = Object.values(a[0]).length,
       bNumRows = b.length, bNumCols = Object.values(b[0]).length,
-      m = new Array(aNumRows);  // initialize array of rows
+      m = new Array(aNumRows); 
   for (var r = 0; r < aNumRows; ++r) {
-    m[r] = new Array(bNumCols+1); // initialize the current row
+    m[r] = new Array(bNumCols+1); 
     for (var c = 0; c < bNumCols; ++c) {
-      m[r][c] = 0;             // initialize the current cell
+      m[r][c] = 0;   
       for (var i = 0; i < aNumCols; ++i) {
           m[r][c] += Object.values(a[r])[i] * Object.values(b[i])[c];            
       }      
@@ -47,19 +47,41 @@ function multiply(a, b) {
   }
   m = normalizardatos(m);
   for (var r = 0; r < aNumRows; ++r) {
-    m[r][2] = m[r][2] + 10;
     m[r][3] =1;
     m[r] = Object.assign({},m[r]);
   }
   return m;
 }
+function deleteChildren(proxymatriz) {
+  while (proxymatriz.firstChild) {
+    proxymatriz.removeChild(proxymatriz.firstChild);
+  }
+}
 
+function crearproxyburbujas(matriz){
 
+    var proxymatriz = document.querySelector('#burbujasmatriz');
+    m = new Array(matriz.length);
+    
+    for (var r = 0; r < matriz.length; ++r) {
+      m[r] = new Array(Object.values(matriz[0]).length +1);
+      m[r]= Object.values(matriz[r]);
+      m[r][3] =1;
+      m[r] = Object.assign({},m[r]);
+    }
+    //console.log(proxymatriz);
+
+  
+    proxymatriz.setAttribute('babia-bubbles','data',JSON.stringify(m));
+    
+  
+    
+}
 
 
 AFRAME.registerComponent('multiply-matrix', {
     schema:{
-        archivo: { type:'string',defaul:''},
+        archivo: { type:'string',default:''},
         matriz: { type: 'string',default:''}  
     },
     init: function(){
@@ -84,8 +106,12 @@ AFRAME.registerComponent('multiply-matrix', {
                     return response.json();
                   })
                   .then(function(matrix) {
+                    crearproxyburbujas(matrix);
                     var m  = multiply(archive,matrix);
+                    console.log(matrix,m);
+                    burbujas.setAttribute('babia-bubbles','axis',true);
                     burbujas.setAttribute('babia-bubbles','data',JSON.stringify(m));
+                    
                   });
               });
             
