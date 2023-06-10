@@ -1,4 +1,5 @@
 
+
 function normalizardatos(matrix){
   const columnMeans = [];
   for (let col = 0; col < matrix[0].length; col++) {
@@ -71,11 +72,16 @@ function crearproxyburbujas(matriz){
     }
     //console.log(proxymatriz);
 
-  
     proxymatriz.setAttribute('babia-bubbles','data',JSON.stringify(m));
-    
   
+    //for(let i =0;i<proxymatriz.children[0].children.length-3;i++){
+      //proxymatriz.children[0].children[i].outerHTML = proxymatriz.children[0].children[i].outerHTML.substring(0,10) + "cambiar-posicion "+ proxymatriz.children[0].children[i].outerHTML.substring(10,proxymatriz.children[0].children[i].outerHTML.length);
+    //}
     
+    var burbujas = document.querySelectorAll('.babiaxraycasterclass');
+    for(let i =0;i<burbujas.length;i++){
+      burbujas[i].setAttribute('cambiar-posicion','');
+    }
 }
 
 
@@ -108,7 +114,6 @@ AFRAME.registerComponent('multiply-matrix', {
                   .then(function(matrix) {
                     crearproxyburbujas(matrix);
                     var m  = multiply(archive,matrix);
-                    console.log(matrix,m);
                     burbujas.setAttribute('babia-bubbles','axis',true);
                     burbujas.setAttribute('babia-bubbles','data',JSON.stringify(m));
                     

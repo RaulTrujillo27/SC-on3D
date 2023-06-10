@@ -3,11 +3,6 @@ AFRAME.registerComponent('rotate-on-grab', {
     this.grabbed = false;
     this.previousMousePosition = { x: 0, y: 0 };
 
-    this.el.addEventListener('mousedown', (event) => {
-      this.grabbed = true;
-      this.previousMousePosition.x = event.detail.intersection.point.x;
-      this.previousMousePosition.y = event.detail.intersection.point.y;
-    });
     window.addEventListener('mousemove', (event1) => {
       this.el.addEventListener('mousedown', (event) => {
         this.grabbed = true;
