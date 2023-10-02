@@ -1,5 +1,3 @@
-
-
 function normalizardatos(matrix){
   const columnMeans = [];
   for (let col = 0; col < matrix[0].length; col++) {
@@ -31,10 +29,12 @@ function normalizardatos(matrix){
   return matrix;
 }
 
+
 function multiply(a, b) {
   var aNumRows = a.length, aNumCols = Object.values(a[0]).length,
       bNumRows = b.length, bNumCols = Object.values(b[0]).length,
       m = new Array(aNumRows); 
+
   for (var r = 0; r < aNumRows; ++r) {
     m[r] = new Array(bNumCols+1); 
     for (var c = 0; c < bNumCols; ++c) {
@@ -43,8 +43,7 @@ function multiply(a, b) {
           m[r][c] += Object.values(a[r])[i] * Object.values(b[i])[c];            
       }      
     }
-        
-    
+         
   }
   m = normalizardatos(m);
   for (var r = 0; r < aNumRows; ++r) {
@@ -53,6 +52,7 @@ function multiply(a, b) {
   }
   return m;
 }
+
 function deleteChildren(proxymatriz) {
   while (proxymatriz.firstChild) {
     proxymatriz.removeChild(proxymatriz.firstChild);
@@ -70,20 +70,24 @@ function crearproxyburbujas(matriz){
       m[r][3] =1;
       m[r] = Object.assign({},m[r]);
     }
-    //console.log(proxymatriz);
-
     proxymatriz.setAttribute('babia-bubbles','data',JSON.stringify(m));
-  
-    //for(let i =0;i<proxymatriz.children[0].children.length-3;i++){
-      //proxymatriz.children[0].children[i].outerHTML = proxymatriz.children[0].children[i].outerHTML.substring(0,10) + "cambiar-posicion "+ proxymatriz.children[0].children[i].outerHTML.substring(10,proxymatriz.children[0].children[i].outerHTML.length);
-    //}
-    
+    proxymatriz.setAttribute('babia-bubbles','axis',true);
     var burbujas = document.querySelectorAll('.babiaxraycasterclass');
     for(let i =0;i<burbujas.length;i++){
       burbujas[i].setAttribute('cambiar-posicion','');
     }
 }
 
+function multiply_axis(matrix){
+
+  var m = new Array(matrix.length);
+
+  for(var r = 0; r < matrix.length; ++r){
+    m[r] = Object.values(matrix[r]);
+    m[r][0] = (Object.values(matrix[r])[0])*10;
+  }
+  return m;
+}
 
 AFRAME.registerComponent('multiply-matrix', {
     schema:{
@@ -113,6 +117,9 @@ AFRAME.registerComponent('multiply-matrix', {
                   })
                   .then(function(matrix) {
                     crearproxyburbujas(matrix);
+                    console.log(matrix);
+                    console.log(multiply_axis(matrix));
+                    console.log(matrix);
                     var m  = multiply(archive,matrix);
                     burbujas.setAttribute('babia-bubbles','axis',true);
                     burbujas.setAttribute('babia-bubbles','data',JSON.stringify(m));

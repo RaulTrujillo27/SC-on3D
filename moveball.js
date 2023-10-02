@@ -17,7 +17,6 @@ AFRAME.registerComponent('cambiar-posicion', {
       
       window.addEventListener('mousemove', (event) => {
         if (this.grabbed) {
-          console.log(this);
           const currentMousePosition = { x: event.clientX, y: event.clientY };
           const rotationSpeed = 0.25;
           const deltaMouseX = currentMousePosition.x - this.previousMousePosition.x;
@@ -30,16 +29,12 @@ AFRAME.registerComponent('cambiar-posicion', {
             z: currentPosition.z - (deltaMouseX * rotationSpeed + deltaMouseY * rotationSpeed)*rotationSpeed
           });
           this.previousMousePosition = currentMousePosition;
-          
         }
         
       });
   
       window.addEventListener('mouseup', () => {
         this.grabbed = false;
-        const currentPosition= this.el.getAttribute('position');
-        console.log("Posicion despues", currentPosition);
-        console.log("");
       });
     }
   });

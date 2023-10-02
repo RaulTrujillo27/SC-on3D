@@ -18,13 +18,11 @@
 
         <!-- Environment -->
          <a-entity environment >
-          
-            <!-- Bubbles data -->
-            <a-entity id="bubblesrealdata" babia-bubbles='legend: true; axis:false; palette: flat;  radiusMax: 2.5;  heightMax: 70; data:[];
-              x_axis: 0; z_axis: 1; height: 2; radius: 3' position="-10 25 0" rotation="0 0 0"  scale="0.05 0.05 0.05" rotate-on-grab >   
-            </a-entity>
-            
-            
+
+              <!-- Bubbles data -->
+              <a-entity id="bubblesrealdata" babia-bubbles='legend: true; axis:false; palette: flat;  radiusMax: 2.5;  heightMax: 70; data:[];
+                x_axis: 0; z_axis: 1; height: 2; radius: 3' position="-10 25 0" rotation="0 0 0"  scale="0.05 0.05 0.05" rotate-on-grab> 
+              </a-entity>
             <!-- Light -->
             <a-light type="point" intensity="1" position="-10 20 30"></a-light>
         
@@ -33,12 +31,32 @@
             <!--Switch para proxys-->
             <a-box id="encendedorproxys" position="0 24.25 4" color ="#e1b020" width="0.125" height="0.125" depth="0.125" rotation="-15 0 0" switch></a-box>
               <!--Proxys-->
+              
               <a-entity id="proxys" visible="true">
                 <!-- Grafico proxy matrix -->
-                <a-entity id="burbujasmatriz" babia-bubbles='legend: true; palette: ubuntu;  radiusMax: 0.15;  heightMax: 5; data:[];
+                <a-entity id="burbujasmatriz" babia-bubbles='legend: true; axis:false; palette: ubuntu;  radiusMax: 0.15;  heightMax: 5; data:[];
                 x_axis: 0; z_axis: 1; height: 2; radius: 3' position ="-1 24.25 3.5" rotation="0 0 0" scale="0.1 0.1 0.1" >   
                 </a-entity>
-                
+                <!--multiplicador de dimensiones de matriz-->
+                <a-box position="-7 24.25 3.5" width="1.05" height="0.55" depth="0.02" color="#ffffff" opacity="0">
+                  <a-text position="4.8 1.22  0" value="+" color="black" width="2"></a-text>
+                  <a-box position="-1.5 1.6 -5" width="0.01" height="3" depth="0.01" color="black">
+                    <a-triangle position="0 1.75 0" color="black" rotation="0 0 0" scale="0.25 0.5"></a-triangle>
+                    <a-box  width="0.35" height="0.2" depth="0.1" color="black" upanddown-on-grab></a-box>
+                    <a-triangle position="0 -1.75 0" color="black" rotation="0 0 180" scale="0.25 0.5"></a-triangle>
+                  </a-box>
+                  <a-box position="0 1.6 -5" width="0.01" height="3" depth="0.01" color="black">
+                    <a-triangle position="0 1.75 0" color="black" rotation="0 0 0" scale="0.25 0.5" height="100"></a-triangle>
+                    <a-box  width="0.35" height="0.2" depth="0.1" color="black" upanddown-on-grab></a-box>
+                    <a-triangle position="0 -1.75 0" color="black" rotation="0 0 180" scale="0.25 0.5"></a-triangle>
+                  </a-box>
+                  <a-box position="1.5 1.6 -5" width="0.01" height="3" depth="0.01" color="black">
+                    <a-triangle position="0 1.75 0" color="black" rotation="0 0 0" scale="0.25 0.5"></a-triangle>
+                    <a-box  width="0.35" height="0.2" depth="0.1" color="black" upanddown-on-grab></a-box>
+                    <a-triangle position="0 -1.75 0" color="black" rotation="0 0 180" scale="0.25 0.5"></a-triangle>
+                  </a-box>
+                  <a-text position="4.8 0.72 0" value="_" color="black" width="2"></a-text>
+                </a-box>
                 <a-box position="1 24.25 3.5"color ="black" width="1.05" height="0.55" depth="0.02" rotation="-15 0 0">
                   <a-box position="0 0 0.02"color ="#EAE754" width="1" height="0.5" depth="0.02" rotation="0 0 0">
                     <!-- box cereales -->
