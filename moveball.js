@@ -21,7 +21,6 @@ AFRAME.registerComponent('cambiar-posicion', {
           const rotationSpeed = 0.25;
           const deltaMouseX = currentMousePosition.x - this.previousMousePosition.x;
           const deltaMouseY = currentMousePosition.y - this.previousMousePosition.y;
-          const deltaDiff = deltaMouseX -deltaMouseY;
           const currentPosition= this.el.getAttribute('position');
           this.el.setAttribute('position', {
             x: currentPosition.x + deltaMouseX * rotationSpeed,
@@ -39,4 +38,3 @@ AFRAME.registerComponent('cambiar-posicion', {
     }
   });
   
-      

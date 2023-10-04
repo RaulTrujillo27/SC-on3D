@@ -1,3 +1,7 @@
+let dataBotonMulti = {
+  "archivo": "",
+  "matriz": ""
+};
 function normalizardatos(matrix){
   const columnMeans = [];
   for (let col = 0; col < matrix[0].length; col++) {
@@ -30,7 +34,7 @@ function normalizardatos(matrix){
 }
 
 
-function multiply(a, b) {
+function multiply(a, b,vector) {
   var aNumRows = a.length, aNumCols = Object.values(a[0]).length,
       bNumRows = b.length, bNumCols = Object.values(b[0]).length,
       m = new Array(aNumRows); 
@@ -89,46 +93,67 @@ function multiply_axis(matrix){
   return m;
 }
 
+function getVectores(){
+  var vectorFinal = new Array(3);
+  var posicionVectores = document.querySelectorAll('[upanddown-on-grab]');
+  console.log(posicionVectores[0].getAttribute('position').y);
+  vectorFinal[0] = posicionVectores[0].getAttribute('position').y;
+  vectorFinal[1] = posicionVectores[1].getAttribute('position').y;
+  vectorFinal[2] = posicionVectores[2].getAttribute('position').y;
+
+  return vectorFinal;
+}
+
 AFRAME.registerComponent('multiply-matrix', {
     schema:{
         archivo: { type:'string',default:''},
-        matriz: { type: 'string',default:''}  
+        matriz: { type: 'string',default:''},
+        vector: {type: 'array',default:[1,1,1]},
+        multiplicador: {type: 'string',default:'0'}
     },
     init: function(){
       //cambio altura
       var geometry = this.el.getAttribute('geometry');
       geometry.height = 0.1;
       //fin cambio altura
-
       var  archivo = this.data.archivo;
-      var  matriz = this.data.matriz;
-      
+      var  matrizdato = this.data.matriz;
+      var vector = this.data.vector;
+      var  multiplicador = this.data.multiplicador ;
+
       this.el.setAttribute('geometry', geometry);
+
       this.el.addEventListener('click', function(){
+            if(multiplicador === '1'){
+              archivo = dataBotonMulti.archivo;
+              matrizdato =  dataBotonMulti.matriz;
+              vector = getVectores();
+            }else{
+              //let stringDatos = ['archivo: ',archivo,';',' matriz: ',matrizdato];
+              //let result = ''.concat(...stringDatos);
+              //dataBotonMulti = result;              
+              dataBotonMulti.archivo = archivo;
+              dataBotonMulti.matriz = matrizdato;             
+            }
+
             var burbujas = document.querySelector('#bubblesrealdata');
             fetch(archivo)
               .then(function(response) {
                 return response.json();
               })
               .then(function(archive) {
-                fetch(matriz)
+                fetch(matrizdato)
                   .then(function(response) {
                     return response.json();
                   })
                   .then(function(matrix) {
                     crearproxyburbujas(matrix);
-                    console.log(matrix);
-                    console.log(multiply_axis(matrix));
-                    console.log(matrix);
-                    var m  = multiply(archive,matrix);
+                    var m  = multiply(archive,matrix,vector);
                     burbujas.setAttribute('babia-bubbles','axis',true);
-                    burbujas.setAttribute('babia-bubbles','data',JSON.stringify(m));
-                    
+                    burbujas.setAttribute('babia-bubbles','data',JSON.stringify(m));                
                   });
-              });
-            
-      })
-      
+              });     
+      })      
     }             
   });
 

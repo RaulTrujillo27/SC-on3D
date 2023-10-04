@@ -46,7 +46,7 @@ AFRAME.registerComponent('upanddown-on-grab', {
         this.previousMousePosition.y = event1.clientY;
       });
     });
-      
+    
     
     window.addEventListener('mousemove', (event) => {
       if (this.grabbed) {
@@ -54,7 +54,6 @@ AFRAME.registerComponent('upanddown-on-grab', {
         const rotationSpeed = 0.025;
         const deltaMouseX = currentMousePosition.x - this.previousMousePosition.x;
         const deltaMouseY = this.previousMousePosition.y - currentMousePosition.y;
-        console.log(deltaMouseY);
         const currentPosition = this.el.getAttribute('position');
         var positionY = currentPosition.y + deltaMouseY * rotationSpeed;
         if(positionY>1.5){
@@ -67,8 +66,6 @@ AFRAME.registerComponent('upanddown-on-grab', {
           y: positionY,
           z: currentPosition.z 
         });
-        console.log(currentMousePosition);
-        console.log(this.el.getAttribute('position'));
         this.previousMousePosition = currentMousePosition;
       }
     });
@@ -78,5 +75,5 @@ AFRAME.registerComponent('upanddown-on-grab', {
     });
   }
 });
-
-
+ 
+    

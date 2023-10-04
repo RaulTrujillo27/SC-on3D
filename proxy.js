@@ -3,6 +3,7 @@ AFRAME.registerComponent('switch', {
     
     
     init: function () {
+        
         this.el.addEventListener('click', function(){
             
             var proxy = document.querySelector("#proxys");
@@ -22,3 +23,5 @@ AFRAME.registerComponent('switch', {
         })
     }
 });
+
+
