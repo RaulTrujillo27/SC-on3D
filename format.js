@@ -2,6 +2,7 @@ let dataBotonMulti = {
   "archivo": "",
   "matriz": ""
 };
+let archivo_actual ;
 function normalizardatos(matrix){
   const columnMeans = [];
   for (let col = 0; col < matrix[0].length; col++) {
@@ -77,39 +78,30 @@ function crearproxyburbujas(matriz){
     proxymatriz.setAttribute('babia-bubbles','data',JSON.stringify(m));
     proxymatriz.setAttribute('babia-bubbles','axis',true);
     var burbujas = document.querySelectorAll('.babiaxraycasterclass');
-    for(let i =0;i<burbujas.length;i++){
+    for(let i =0; i<burbujas.length; i++){
       burbujas[i].setAttribute('cambiar-posicion','');
     }
 }
 
-function multiply_axis(matrix){
 
-  var m = new Array(matrix.length);
 
-  for(var r = 0; r < matrix.length; ++r){
-    m[r] = Object.values(matrix[r]);
-    m[r][0] = (Object.values(matrix[r])[0])*10;
+window.pintarGrafico = function(archive,matrix){
+  if(archive == null){
+    archive = archivo_actual;
+  }else{
+    archivo_actual = archive;
   }
-  return m;
+  var burbujas = document.querySelector('#bubblesrealdata');
+  var m  = multiply(archive,matrix);
+  burbujas.setAttribute('babia-bubbles','axis',true);
+  burbujas.setAttribute('babia-bubbles','data',JSON.stringify(m));
 }
 
-function getVectores(){
-  var vectorFinal = new Array(3);
-  var posicionVectores = document.querySelectorAll('[upanddown-on-grab]');
-  console.log(posicionVectores[0].getAttribute('position').y);
-  vectorFinal[0] = posicionVectores[0].getAttribute('position').y;
-  vectorFinal[1] = posicionVectores[1].getAttribute('position').y;
-  vectorFinal[2] = posicionVectores[2].getAttribute('position').y;
-
-  return vectorFinal;
-}
 
 AFRAME.registerComponent('multiply-matrix', {
     schema:{
         archivo: { type:'string',default:''},
-        matriz: { type: 'string',default:''},
-        vector: {type: 'array',default:[1,1,1]},
-        multiplicador: {type: 'string',default:'0'}
+        matriz: { type: 'string',default:''}
     },
     init: function(){
       //cambio altura
@@ -118,25 +110,18 @@ AFRAME.registerComponent('multiply-matrix', {
       //fin cambio altura
       var  archivo = this.data.archivo;
       var  matrizdato = this.data.matriz;
-      var vector = this.data.vector;
-      var  multiplicador = this.data.multiplicador ;
 
       this.el.setAttribute('geometry', geometry);
 
       this.el.addEventListener('click', function(){
-            if(multiplicador === '1'){
+            /*if(multiplicador === '1'){
               archivo = dataBotonMulti.archivo;
               matrizdato =  dataBotonMulti.matriz;
-              vector = getVectores();
-            }else{
-              //let stringDatos = ['archivo: ',archivo,';',' matriz: ',matrizdato];
-              //let result = ''.concat(...stringDatos);
-              //dataBotonMulti = result;              
+            }else{          
               dataBotonMulti.archivo = archivo;
               dataBotonMulti.matriz = matrizdato;             
-            }
+            }*/
 
-            var burbujas = document.querySelector('#bubblesrealdata');
             fetch(archivo)
               .then(function(response) {
                 return response.json();
@@ -147,10 +132,9 @@ AFRAME.registerComponent('multiply-matrix', {
                     return response.json();
                   })
                   .then(function(matrix) {
+                    console.log(matrizdato);
                     crearproxyburbujas(matrix);
-                    var m  = multiply(archive,matrix,vector);
-                    burbujas.setAttribute('babia-bubbles','axis',true);
-                    burbujas.setAttribute('babia-bubbles','data',JSON.stringify(m));                
+                    pintarGrafico(archive,matrix);
                   });
               });     
       })      

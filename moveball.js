@@ -30,10 +30,19 @@ AFRAME.registerComponent('cambiar-posicion', {
           this.previousMousePosition = currentMousePosition;
         }
         
+        
       });
   
       window.addEventListener('mouseup', () => {
-        this.grabbed = false;
+        if(this.grabbed){
+          this.grabbed = false;
+          let matrizdato = JSON.parse(document.querySelector('#burbujasmatriz').getAttribute('babia-bubbles').data);
+          console.log(matrizdato);
+          
+          //window.pintarGrafico(null,);
+          
+        }
+        
       });
     }
   });
