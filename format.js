@@ -68,7 +68,6 @@ function crearproxyburbujas(matriz){
 
     var proxymatriz = document.querySelector('#burbujasmatriz');
     m = new Array(matriz.length);
-    
     for (var r = 0; r < matriz.length; ++r) {
       m[r] = new Array(Object.values(matriz[0]).length +1);
       m[r]= Object.values(matriz[r]);
@@ -80,6 +79,7 @@ function crearproxyburbujas(matriz){
     var burbujas = document.querySelectorAll('.babiaxraycasterclass');
     for(let i =0; i<burbujas.length; i++){
       burbujas[i].setAttribute('cambiar-posicion','');
+      burbujas[i].setAttribute('num_burbuja',i);
     }
 }
 
@@ -132,7 +132,6 @@ AFRAME.registerComponent('multiply-matrix', {
                     return response.json();
                   })
                   .then(function(matrix) {
-                    console.log(matrizdato);
                     crearproxyburbujas(matrix);
                     pintarGrafico(archive,matrix);
                   });
