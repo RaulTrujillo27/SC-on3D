@@ -76,9 +76,11 @@ function crearproxyburbujas(matriz){
     }
     proxymatriz.setAttribute('babia-bubbles','data',JSON.stringify(m));
     proxymatriz.setAttribute('babia-bubbles','axis',true);
-    var burbujas = document.querySelectorAll('.babiaxraycasterclass');
-    for(let i =0; i<burbujas.length; i++){
-      burbujas[i].setAttribute('cambiar-posicion','');
+    //var burbujas = document.querySelectorAll('.babiaxraycasterclass');
+    var burbujas = proxymatriz.firstChild.children;
+    for(let i =0; i<burbujas.length-3; i++){
+      var posicionInicial = burbujas[i].components.position.attrValue.x +"," + burbujas[i].components.position.attrValue.y  +"," + burbujas[i].components.position.attrValue.z ;
+      burbujas[i].setAttribute('cambiar-posicion',posicionInicial);
       burbujas[i].setAttribute('num_burbuja',i);
     }
 }
