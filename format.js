@@ -35,7 +35,7 @@ function normalizardatos(matrix){
 }
 
 
-function multiply(a, b,vector) {
+function multiply(a, b) {
   var aNumRows = a.length, aNumCols = Object.values(a[0]).length,
       bNumRows = b.length, bNumCols = Object.values(b[0]).length,
       m = new Array(aNumRows); 
@@ -76,7 +76,6 @@ function crearproxyburbujas(matriz){
     }
     proxymatriz.setAttribute('babia-bubbles','data',JSON.stringify(m));
     proxymatriz.setAttribute('babia-bubbles','axis',true);
-    //var burbujas = document.querySelectorAll('.babiaxraycasterclass');
     var burbujas = proxymatriz.firstChild.children;
     for(let i =0; i<burbujas.length-3; i++){
       var posicionInicial = burbujas[i].components.position.attrValue.x +"," + burbujas[i].components.position.attrValue.y  +"," + burbujas[i].components.position.attrValue.z ;
@@ -84,8 +83,6 @@ function crearproxyburbujas(matriz){
       burbujas[i].setAttribute('num_burbuja',i);
     }
 }
-
-
 
 window.pintarGrafico = function(archive,matrix){
   if(archive == null){

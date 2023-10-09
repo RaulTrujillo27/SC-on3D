@@ -38,7 +38,7 @@ AFRAME.registerComponent('cambiar-posicion', {
         const deltaMouseX = currentMousePosition.x - this.previousMousePosition.x;
         const deltaMouseY = currentMousePosition.y - this.previousMousePosition.y;
         
-        finalPosition = currentPosition;
+        
         this.el.setAttribute('position', {
           x: currentPosition.x + deltaMouseX * rotationSpeed,
           y: currentPosition.y - deltaMouseY * rotationSpeed,
@@ -53,17 +53,18 @@ AFRAME.registerComponent('cambiar-posicion', {
     window.addEventListener('mouseup', () => {
       if(this.grabbed){
         this.grabbed = false;
+        let finalPosition = this.el.getAttribute('position');
         let matrizdato = JSON.parse(document.querySelector('#burbujasmatriz').getAttribute('babia-bubbles').data);
         let previousBubblePosition = this.data.split(",");
         let num_burbuja = this.el.getAttribute('num_burbuja');
-        let resta = {x: (finalPosition.x -previousBubblePosition[0])/previousBubblePosition[0], y: (finalPosition.y -previousBubblePosition[1])/previousBubblePosition[1] ,z: (finalPosition.z - previousBubblePosition[2])/previousBubblePosition[2] };    
-        matrizdato[num_burbuja][0] = matrizdato[num_burbuja][0] * resta.x;
-        matrizdato[num_burbuja][1] = matrizdato[num_burbuja][1] * resta.y;
-        matrizdato[num_burbuja][2] = matrizdato[num_burbuja][2] * resta.z;
-        
+        let resta = {x: finalPosition.x -previousBubblePosition[0], y: finalPosition.y -previousBubblePosition[1] ,z: finalPosition.z - previousBubblePosition[2]};
+        matrizdato[num_burbuja][0] = matrizdato[num_burbuja][0] + resta.x;
+        matrizdato[num_burbuja][1] = matrizdato[num_burbuja][1] + resta.y;
+        matrizdato[num_burbuja][2] = matrizdato[num_burbuja][2] + resta.z;
         window.pintarGrafico(null,matrizdato);
       }
     });
   }
   });
-  
+
+ 
