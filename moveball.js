@@ -61,6 +61,7 @@ AFRAME.registerComponent('cambiar-posicion', {
         matrizdato[num_burbuja][0] = matrizdato[num_burbuja][0] + resta.x;
         matrizdato[num_burbuja][1] = matrizdato[num_burbuja][1] + resta.y;
         matrizdato[num_burbuja][2] = matrizdato[num_burbuja][2] + resta.z;
+        window.crearproxyburbujas(matrizdato);
         window.pintarGrafico(null,matrizdato);
       }
     });

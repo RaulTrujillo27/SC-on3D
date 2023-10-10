@@ -64,7 +64,7 @@ function deleteChildren(proxymatriz) {
   }
 }
 
-function crearproxyburbujas(matriz){
+window.crearproxyburbujas= function(matriz){
 
     var proxymatriz = document.querySelector('#burbujasmatriz');
     m = new Array(matriz.length);
