@@ -10,14 +10,6 @@ AFRAME.registerComponent('cambiar-posicion', {
     
     this.previousMousePosition = { x: 0, y: 0 };
     
-    /*if(libre){
-      previousBubblePosition= this.el.getAttribute('position');
-      libre = false;
-      console.log("libre si");
-    }else{
-      console.log("libre no");
-    }*/
-    
 
     window.addEventListener('mousemove', (event1) => {
       this.el.addEventListener('mousedown', (event) => {
@@ -67,5 +59,38 @@ AFRAME.registerComponent('cambiar-posicion', {
     });
   }
   });
+AFRAME.registerComponent('recalculate-graphic', {
+
+  init: function () {
+    this.isGrabbed=false;
+  },
+
+  tick: function(){
+    if(this.el.components.grabbable.grabbed){
+      this.isGrabbed=true;
+    }
+    if(!this.el.components.grabbable.grabbed && this.isGrabbed){
+      this.isGrabbed=false;
+      let finalPosition = this.el.getAttribute('position');
+      let previousBubblePosition = this.el.getAttribute('posicionInicial').split(",");
+      console.log(finalPosition,previousBubblePosition)
+      console.log(finalPosition!= previousBubblePosition);
+      if(finalPosition.x!=previousBubblePosition[0] ||finalPosition.y!=previousBubblePosition[1] ||finalPosition.z!=previousBubblePosition[2]){
+        let matrizdato = JSON.parse(document.querySelector('#burbujasmatriz').getAttribute('bubbles-simplified').data);
+        let num_burbuja = this.el.getAttribute('num_burbuja');
+        let proportion = this.el.getAttribute('proportion');
+        let radio_burbuja= document.querySelector('#burbujasmatriz').getAttribute('bubbles-simplified').radiusMax;
+        let resta = {x: finalPosition.x -previousBubblePosition[0], y: finalPosition.y -previousBubblePosition[1] ,z: finalPosition.z - previousBubblePosition[2]};
+        matrizdato[num_burbuja].D1 = matrizdato[num_burbuja].D1 + resta.x/proportion;
+        matrizdato[num_burbuja].D3 = matrizdato[num_burbuja].D3 + resta.y/proportion;
+        matrizdato[num_burbuja].D2 = matrizdato[num_burbuja].D2 + resta.z/proportion;
+        window.crearproxyburbujas(matrizdato);
+        window.pintarGrafico(null,matrizdato);
+      }
+      
+    }
+  }
+});
+
 
  

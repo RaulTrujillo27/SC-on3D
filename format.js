@@ -1,7 +1,3 @@
-let dataBotonMulti = {
-  "archivo": "",
-  "matriz": ""
-};
 let archivo_actual ;
 function normalizardatos(matrix){
   const columnMeans = [];
@@ -37,7 +33,7 @@ function normalizardatos(matrix){
 
 function multiply(a, b) {
   var aNumRows = a.length, aNumCols = Object.values(a[0]).length,
-      bNumRows = b.length, bNumCols = Object.values(b[0]).length,
+       bNumCols = Object.values(b[0]).length,
       m = new Array(aNumRows); 
 
   for (var r = 0; r < aNumRows; ++r) {
@@ -51,37 +47,26 @@ function multiply(a, b) {
          
   }
   m = normalizardatos(m);
-  for (var r = 0; r < aNumRows; ++r) {
-    m[r][3] =1;
-    m[r] = Object.assign({},m[r]);
-  }
+  
   return m;
 }
 
-function deleteChildren(proxymatriz) {
-  while (proxymatriz.firstChild) {
-    proxymatriz.removeChild(proxymatriz.firstChild);
-  }
-}
 
 window.crearproxyburbujas= function(matriz){
-
     var proxymatriz = document.querySelector('#burbujasmatriz');
-    m = new Array(matriz.length);
-    for (var r = 0; r < matriz.length; ++r) {
-      m[r] = new Array(Object.values(matriz[0]).length +1);
-      m[r]= Object.values(matriz[r]);
-      m[r][3] =1;
-      m[r] = Object.assign({},m[r]);
-    }
-    proxymatriz.setAttribute('babia-bubbles','data',JSON.stringify(m));
-    proxymatriz.setAttribute('babia-bubbles','axis',true);
+    
+    proxymatriz.setAttribute('bubbles-simplified','data',JSON.stringify(matriz));
+    proxymatriz.setAttribute('bubbles-simplified','axis',true);
     var burbujas = proxymatriz.firstChild.children;
-    for(let i =0; i<burbujas.length-3; i++){
-      var posicionInicial = burbujas[i].components.position.attrValue.x +"," + burbujas[i].components.position.attrValue.y  +"," + burbujas[i].components.position.attrValue.z ;
-      burbujas[i].setAttribute('cambiar-posicion',posicionInicial);
+    for(let i =0; i<burbujas.length-3; i++){     
+      burbujas[i].setAttribute('posicionInicial',burbujas[i].components.position.attrValue.x +"," + burbujas[i].components.position.attrValue.y  +"," + burbujas[i].components.position.attrValue.z );
+      setTimeout(setGrabbable(burbujas[i]),5000);
       burbujas[i].setAttribute('num_burbuja',i);
     }
+}
+function setGrabbable(burbuja){
+       burbuja.setAttribute('grabbable','');
+       burbuja.setAttribute('recalculate-graphic','');
 }
 
 window.pintarGrafico = function(archive,matrix){
@@ -92,8 +77,9 @@ window.pintarGrafico = function(archive,matrix){
   }
   var burbujas = document.querySelector('#bubblesrealdata');
   var m  = multiply(archive,matrix);
-  burbujas.setAttribute('babia-bubbles','axis',true);
-  burbujas.setAttribute('babia-bubbles','data',JSON.stringify(m));
+  console.log(m);
+  burbujas.setAttribute('bubbles-simplified','axis',true);
+  burbujas.setAttribute('bubbles-simplified','data',JSON.stringify(m));
 }
 
 
@@ -113,13 +99,6 @@ AFRAME.registerComponent('multiply-matrix', {
       this.el.setAttribute('geometry', geometry);
 
       this.el.addEventListener('click', function(){
-            /*if(multiplicador === '1'){
-              archivo = dataBotonMulti.archivo;
-              matrizdato =  dataBotonMulti.matriz;
-            }else{          
-              dataBotonMulti.archivo = archivo;
-              dataBotonMulti.matriz = matrizdato;             
-            }*/
 
             fetch(archivo)
               .then(function(response) {
