@@ -1,5 +1,4 @@
 let finalPosition;
-var libre = true;
 var previousBubblePosition;
 AFRAME.registerComponent('cambiar-posicion', {
   schema:{
@@ -73,17 +72,16 @@ AFRAME.registerComponent('recalculate-graphic', {
       this.isGrabbed=false;
       let finalPosition = this.el.getAttribute('position');
       let previousBubblePosition = this.el.getAttribute('posicionInicial').split(",");
-      console.log(finalPosition,previousBubblePosition)
-      console.log(finalPosition!= previousBubblePosition);
       if(finalPosition.x!=previousBubblePosition[0] ||finalPosition.y!=previousBubblePosition[1] ||finalPosition.z!=previousBubblePosition[2]){
         let matrizdato = JSON.parse(document.querySelector('#burbujasmatriz').getAttribute('bubbles-simplified').data);
         let num_burbuja = this.el.getAttribute('num_burbuja');
-        let proportion = this.el.getAttribute('proportion');
-        let radio_burbuja= document.querySelector('#burbujasmatriz').getAttribute('bubbles-simplified').radiusMax;
+        let proportionX = this.el.getAttribute('proportionX');
+        let proportionY = this.el.getAttribute('proportionY');
+        let proportionZ = this.el.getAttribute('proportionZ');
         let resta = {x: finalPosition.x -previousBubblePosition[0], y: finalPosition.y -previousBubblePosition[1] ,z: finalPosition.z - previousBubblePosition[2]};
-        matrizdato[num_burbuja].D1 = matrizdato[num_burbuja].D1 + resta.x/proportion;
-        matrizdato[num_burbuja].D3 = matrizdato[num_burbuja].D3 + resta.y/proportion;
-        matrizdato[num_burbuja].D2 = matrizdato[num_burbuja].D2 + resta.z/proportion;
+        matrizdato[num_burbuja].D1 = matrizdato[num_burbuja].D1 + resta.x/proportionX;
+        matrizdato[num_burbuja].D2 = matrizdato[num_burbuja].D2 + resta.y/proportionY;
+        matrizdato[num_burbuja].D3 = matrizdato[num_burbuja].D3 + resta.z/proportionZ;
         window.crearproxyburbujas(matrizdato);
         window.pintarGrafico(null,matrizdato);
       }

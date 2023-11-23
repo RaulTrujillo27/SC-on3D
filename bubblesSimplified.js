@@ -5,12 +5,15 @@ AFRAME.registerComponent('bubbles-simplified', {
         height: { type: 'string', default: 'height' },
         x_axis: { type: 'string', default: 'x_axis' },
         z_axis: { type: 'string', default: 'z_axis' },
+        color:{type:'string',default:'#7C93C3'},
         from: { type: 'string' },
         legend: { type: 'boolean' },
         legend_lookat: { type: 'string', default: "[camera]" },
         legend_scale: { type: 'number', default: 1 },
         axis: { type: 'boolean', default: true },
-        heightMax: { type: 'number' },
+        heightMax: { type: 'number' ,default:10},
+        lengthMax: { type: 'number' ,default:10},
+        widthMax: { type: 'number' ,default:10},
         radiusMax: { type: 'number' },
     },
     
@@ -41,8 +44,11 @@ AFRAME.registerComponent('bubbles-simplified', {
         const dataToPrint = this.newData;
         const data = this.data;
         const el = this.el;
+        const color = data.color;
     
         let heightMax = data.heightMax
+        let lengthMax = data.lengthMax
+        let widthMax = data.widthMax
         let radiusMax = data.radiusMax
 
         let xLabels = [];
@@ -56,12 +62,12 @@ AFRAME.registerComponent('bubbles-simplified', {
         let maxX = 0
         let maxZ = 0
     
-    
-        let valueMax = Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.height]; }))
-        if (!heightMax) {
-            heightMax = valueMax
-        }
-        proportion = heightMax / valueMax
+        let valueMaxX = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.x_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.x_axis]; }))))
+        let valueMaxY = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.height]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.height]; }))))      
+        let valueMaxZ = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.z_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.z_axis]; }))))
+        proportionX = lengthMax / valueMaxX
+        proportionY = heightMax / valueMaxY
+        proportionZ = widthMax / valueMaxZ
 
         if (!radiusMax) {
             radiusMax = radius
@@ -81,13 +87,13 @@ AFRAME.registerComponent('bubbles-simplified', {
             let height = bubble[data.height]
             
                 
-            stepX = xLabel * proportion
+            stepX = xLabel * proportionX
 
 
             xLabels.push(xLabel)
             //xTicks.push(stepX)
                
-            stepZ = zLabel * proportion
+            stepZ = zLabel * proportionZ
             
             zLabels.push(zLabel)
             //zTicks.push(stepZ)
@@ -99,7 +105,7 @@ AFRAME.registerComponent('bubbles-simplified', {
                 maxZ = stepZ
             }
     
-            let bubbleEntity = generateBubble(height,radius, stepX, stepZ,proportion, radius_scale);
+            let bubbleEntity = generateBubble(height,radius, stepX, stepZ,proportionX,proportionY,proportionZ, radius_scale,color);
             this.chartEl.appendChild(bubbleEntity);
             
             //Prepare legend
@@ -110,17 +116,17 @@ AFRAME.registerComponent('bubbles-simplified', {
     
         //Print axis
         if (data.axis) {
-            const lengthX = maxX
-            const lengthZ = maxZ
+            const lengthX = lengthMax
+            const lengthZ = widthMax
             const lengthY = heightMax
-            this.updateAxis([], xTicks, lengthX, [], zTicks, lengthZ, valueMax, lengthY);
+            this.updateAxis([], xTicks, lengthX, [], zTicks, lengthZ, valueMaxY, lengthY);
         }
     },
 
     /*
     * Update axis
     */
-    updateAxis: function(xLabels, xTicks, lengthX, zLabels, zTicks, lengthZ, valueMax, lengthY) {
+    updateAxis: function(xLabels, xTicks, lengthX, zLabels, zTicks, lengthZ, valueMaxY, lengthY) {
         let xAxisEl = document.createElement('a-entity');
         this.chartEl.appendChild(xAxisEl);
         xAxisEl.setAttribute('babia-axis-x',{'labels': xLabels, 'ticks': xTicks, 'length': lengthX});
@@ -128,7 +134,7 @@ AFRAME.registerComponent('bubbles-simplified', {
   
         let yAxisEl = document.createElement('a-entity');
         this.chartEl.appendChild(yAxisEl);
-        yAxisEl.setAttribute('babia-axis-y',{'maxValue': valueMax, 'length': lengthY});
+        yAxisEl.setAttribute('babia-axis-y',{'maxValue': valueMaxY, 'length': lengthY});
         yAxisEl.setAttribute('position', {x: 0, y: 0, z: 0});
   
         let zAxisEl = document.createElement('a-entity');
@@ -155,19 +161,21 @@ AFRAME.registerComponent('bubbles-simplified', {
 })
 
 
-function generateBubble(height, radius,positionX, positionZ, proportion, radius_scale) {
-    if (proportion || radius_scale) {
-        if (proportion) {
-            height = proportion * height
-        }
-        if (radius_scale) {
-            radius = radius_scale * radius
-        }
+function generateBubble(height, radius,positionX, positionZ, proportionX,proportionY,proportionZ, radius_scale,color) {
+
+    if (proportionY) {
+        height = proportionY * height
     }
+    if (radius_scale) {
+        radius = radius_scale * radius
+    }
+
     let entity = document.createElement('a-sphere');
     entity.setAttribute('radius', radius);
-    entity.setAttribute('color','#7C93C3');
-    entity.setAttribute('proportion',proportion);
+    entity.setAttribute('color',color);
+    entity.setAttribute('proportionX',proportionX);
+    entity.setAttribute('proportionY',proportionY);
+    entity.setAttribute('proportionZ',proportionZ);
     entity.setAttribute('position', { x: positionX, y: height, z: positionZ });
 
     return entity;

@@ -37,7 +37,7 @@ function multiply(a, b) {
       m = new Array(aNumRows); 
 
   for (var r = 0; r < aNumRows; ++r) {
-    m[r] = new Array(bNumCols+1); 
+    m[r] = new Array(bNumCols); 
     for (var c = 0; c < bNumCols; ++c) {
       m[r][c] = 0;   
       for (var i = 0; i < aNumCols; ++i) {
@@ -47,7 +47,6 @@ function multiply(a, b) {
          
   }
   m = normalizardatos(m);
-  
   return m;
 }
 
@@ -77,7 +76,6 @@ window.pintarGrafico = function(archive,matrix){
   }
   var burbujas = document.querySelector('#bubblesrealdata');
   var m  = multiply(archive,matrix);
-  console.log(m);
   burbujas.setAttribute('bubbles-simplified','axis',true);
   burbujas.setAttribute('bubbles-simplified','data',JSON.stringify(m));
 }
