@@ -2,10 +2,12 @@
 AFRAME.registerComponent('bubbles-simplified', {
     schema: {
         data: { type: 'string' },
+        dataMatrix: {type:'string'},
         height: { type: 'string', default: 'height' },
         x_axis: { type: 'string', default: 'x_axis' },
         z_axis: { type: 'string', default: 'z_axis' },
-        color:{type:'string',default:'#7C93C3'},
+        color: {type:'string',default:'#7C93C3'},
+        colorMatrix: {type:'string',default:'#c1121f'},
         from: { type: 'string' },
         legend: { type: 'boolean' },
         legend_lookat: { type: 'string', default: "[camera]" },
@@ -37,14 +39,18 @@ AFRAME.registerComponent('bubbles-simplified', {
      */
     newData: undefined,
 
+    newDataMatrix: undefined,
+
     /*
     * Update chart
     */
     updateChart: function () {
         const dataToPrint = this.newData;
+        const dataToPrintMatrix = this.newDataMatrix;
         const data = this.data;
         const el = this.el;
         const color = data.color;
+        const colorMatrix = data.colorMatrix;
     
         let heightMax = data.heightMax
         let lengthMax = data.lengthMax
@@ -59,12 +65,19 @@ AFRAME.registerComponent('bubbles-simplified', {
         let stepZ = 0
         let radius = 1
     
-        let maxX = 0
-        let maxZ = 0
     
-        let valueMaxX = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.x_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.x_axis]; }))))
-        let valueMaxY = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.height]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.height]; }))))      
-        let valueMaxZ = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.z_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.z_axis]; }))))
+        let valueMaxXData = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.x_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.x_axis]; }))))
+        let valueMaxYData = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.height]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.height]; }))))      
+        let valueMaxZData = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.z_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.z_axis]; }))))
+        
+        let valueMaxXMatrix = Math.max(Math.abs(Math.max.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.x_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.x_axis]; }))))
+        let valueMaxYMatrix = Math.max(Math.abs(Math.max.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.height]; }))),Math.abs(Math.min.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.height]; }))))      
+        let valueMaxZMatrix = Math.max(Math.abs(Math.max.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.z_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.z_axis]; }))))
+        
+        let valueMaxX = Math.max(valueMaxXData,valueMaxXMatrix);
+        let valueMaxY = Math.max(valueMaxYData,valueMaxYMatrix);
+        let valueMaxZ = Math.max(valueMaxZData,valueMaxZMatrix);
+
         proportionX = lengthMax / valueMaxX
         proportionY = heightMax / valueMaxY
         proportionZ = widthMax / valueMaxZ
@@ -77,10 +90,39 @@ AFRAME.registerComponent('bubbles-simplified', {
         this.chartEl.classList.add('babiaxrChart')
         el.appendChild(this.chartEl)
     
-            maxX = 1 * radius_scale;
-            maxZ = 1 * radius_scale;
+            
 
+        let i = 0;
+        for (let bubble of dataToPrintMatrix) {
+            
+            let xLabel = bubble[data.x_axis]
+            let zLabel = bubble[data.z_axis]
+            let height = bubble[data.height]
+            
+                
+            stepX = xLabel * proportionX
+
+
+            xLabels.push(xLabel)
+            //xTicks.push(stepX)
+               
+            stepZ = zLabel * proportionZ
+            
+            zLabels.push(zLabel)
+            //zTicks.push(stepZ)
     
+            
+            let bubbleEntity = generateBubble(height,radius, stepX, stepZ, proportionX, proportionY, proportionZ, radius_scale, colorMatrix);
+            this.chartEl.appendChild(bubbleEntity);
+            bubbleEntity.setAttribute('posicionInicial',bubbleEntity.components.position.attrValue.x +"," + bubbleEntity.components.position.attrValue.y  +"," + bubbleEntity.components.position.attrValue.z );
+            setTimeout(setGrabbable(bubbleEntity),5000);
+            bubbleEntity.setAttribute('num_burbuja',i);
+            i++;
+            //Prepare legend
+            if (data.legend) {
+               showLegend(data, bubbleEntity, bubble, el)
+            }
+        }
         for (let bubble of dataToPrint) {
             let xLabel = bubble[data.x_axis]
             let zLabel = bubble[data.z_axis]
@@ -98,13 +140,7 @@ AFRAME.registerComponent('bubbles-simplified', {
             zLabels.push(zLabel)
             //zTicks.push(stepZ)
     
-            if (stepX > maxX){
-                maxX = stepX
-            }
-            if (stepZ > maxZ){
-                maxZ = stepZ
-            }
-    
+            
             let bubbleEntity = generateBubble(height,radius, stepX, stepZ,proportionX,proportionY,proportionZ, radius_scale,color);
             this.chartEl.appendChild(bubbleEntity);
             
@@ -119,41 +155,35 @@ AFRAME.registerComponent('bubbles-simplified', {
             const lengthX = lengthMax
             const lengthZ = widthMax
             const lengthY = heightMax
-            this.updateAxis([], xTicks, lengthX, [], zTicks, lengthZ, valueMaxY, lengthY);
+            this.updateAxis(lengthX,lengthZ,lengthY);
         }
     },
-
     /*
     * Update axis
     */
-    updateAxis: function(xLabels, xTicks, lengthX, zLabels, zTicks, lengthZ, valueMaxY, lengthY) {
+    updateAxis: function(lengthX, lengthZ, lengthY) {
         let xAxisEl = document.createElement('a-entity');
         this.chartEl.appendChild(xAxisEl);
-        xAxisEl.setAttribute('babia-axis-x',{'labels': xLabels, 'ticks': xTicks, 'length': lengthX});
+        xAxisEl.setAttribute('axis-x',{'length': lengthX});
         xAxisEl.setAttribute('position', {x: 0, y: 0, z: 0});
   
         let yAxisEl = document.createElement('a-entity');
         this.chartEl.appendChild(yAxisEl);
-        yAxisEl.setAttribute('babia-axis-y',{'maxValue': valueMaxY, 'length': lengthY});
+        yAxisEl.setAttribute('axis-y',{'length': lengthY});
         yAxisEl.setAttribute('position', {x: 0, y: 0, z: 0});
   
         let zAxisEl = document.createElement('a-entity');
         this.chartEl.appendChild(zAxisEl);
-        zAxisEl.setAttribute('babia-axis-z',{'labels': zLabels, 'ticks': zTicks, 'length': lengthZ});
+        zAxisEl.setAttribute('axis-z',{'length': lengthZ});
         zAxisEl.setAttribute('position', {x: 0, y: 0, z: 0});
-
-        if (this.data.axis_name){
-            xAxisEl.setAttribute('babia-axis-x', 'name', this.data.x_axis);
-            yAxisEl.setAttribute('babia-axis-y', 'name', this.data.height);
-            zAxisEl.setAttribute('babia-axis-z', 'name', this.data.z_axis);
-        }
     },
 
     /*
     * Process data obtained from producer
     */
-    processData: function (data) {
+    processData: function (data,dataMatrix) {
         this.newData = data;
+        this.newDataMatrix = dataMatrix;
         while (this.el.firstChild)
             this.el.firstChild.remove();
         this.updateChart()
@@ -161,7 +191,12 @@ AFRAME.registerComponent('bubbles-simplified', {
 })
 
 
-function generateBubble(height, radius,positionX, positionZ, proportionX,proportionY,proportionZ, radius_scale,color) {
+function setGrabbable(burbuja){
+    burbuja.setAttribute('grabbable','');
+    burbuja.setAttribute('recalculate-graphic','');
+}
+
+function generateBubble( height, radius, positionX, positionZ, proportionX, proportionY, proportionZ, radius_scale, color) {
 
     if (proportionY) {
         height = proportionY * height
@@ -182,7 +217,7 @@ function generateBubble(height, radius,positionX, positionZ, proportionX,proport
 }
 
 function generateLegend(data, bubble, bubbleEntity) {
-    let text = bubble[data.x_axis] + ': \n Radius:' + bubble[data.radius] + '\nHeight:' + bubble[data.height];
+    let text = 'Length:' + bubble[data.x_axis] + '\nHeight:' + bubble[data.height] + '\nWidth:' + bubble[data.z_axis];
 
     let width = 2;
     if (text.length > 16)
@@ -192,7 +227,8 @@ function generateLegend(data, bubble, bubbleEntity) {
     let bubbleRadius = parseFloat(bubbleEntity.getAttribute('radius'))
     let entity = document.createElement('a-plane');
     entity.setAttribute('position', {
-        x: bubblePosition.x, y: bubblePosition.y + bubbleRadius + 1,
+        x: bubblePosition.x, 
+        y: bubblePosition.y + bubbleRadius + 0.1,
         z: bubblePosition.z + 0.1
     });
     entity.setAttribute('rotation', { x: 0, y: 0, z: 0 });
@@ -237,9 +273,10 @@ let updateFunction = (self, oldData) => {
     let data = self.data;
     let el = self.el;
 
-    if (data.data && oldData.data !== data.data) {
+    if (data.data && oldData.data !== data.data || data.dataMatrix && oldData.dataMatrix !== data.dataMatrix) {
         let _data = parseJson(data.data);
-        self.processData(_data);
+        let _dataMatrix = parseJson(data.dataMatrix);
+        self.processData(_data,_dataMatrix);
     } else if (data.from !== oldData.from) {
         if (self.slice_array) {
             self.slice_array = [];
@@ -255,13 +292,13 @@ let updateFunction = (self, oldData) => {
         }
     }
     // If changed whatever, re-print with the current data
-    else if (data !== oldData && self.newData) {
+    else if (data !== oldData && self.newData || data !== oldData && self.newDataMatrix) {
         if (self.slice_array) {
             self.slice_array = [];
         }
         if (self.bar_array) {
             self.bar_array = [];
         }
-        self.processData(self.newData);
+        self.processData(self.newData,self.newDataMatrix);
     }
 }

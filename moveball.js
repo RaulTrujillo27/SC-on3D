@@ -73,16 +73,16 @@ AFRAME.registerComponent('recalculate-graphic', {
       let finalPosition = this.el.getAttribute('position');
       let previousBubblePosition = this.el.getAttribute('posicionInicial').split(",");
       if(finalPosition.x!=previousBubblePosition[0] ||finalPosition.y!=previousBubblePosition[1] ||finalPosition.z!=previousBubblePosition[2]){
-        let matrizdato = JSON.parse(document.querySelector('#burbujasmatriz').getAttribute('bubbles-simplified').data);
+        let matrizdato = JSON.parse(document.querySelector('#bubblesrealdata').getAttribute('bubbles-simplified').dataMatrix);
         let num_burbuja = this.el.getAttribute('num_burbuja');
         let proportionX = this.el.getAttribute('proportionX');
         let proportionY = this.el.getAttribute('proportionY');
         let proportionZ = this.el.getAttribute('proportionZ');
         let resta = {x: finalPosition.x -previousBubblePosition[0], y: finalPosition.y -previousBubblePosition[1] ,z: finalPosition.z - previousBubblePosition[2]};
-        matrizdato[num_burbuja].D1 = matrizdato[num_burbuja].D1 + resta.x/proportionX;
-        matrizdato[num_burbuja].D2 = matrizdato[num_burbuja].D2 + resta.y/proportionY;
-        matrizdato[num_burbuja].D3 = matrizdato[num_burbuja].D3 + resta.z/proportionZ;
-        window.crearproxyburbujas(matrizdato);
+        console.log(matrizdato,num_burbuja,proportionX,proportionY,proportionZ,resta);
+        matrizdato[num_burbuja][0] = matrizdato[num_burbuja][0] + resta.x/proportionX;
+        matrizdato[num_burbuja][1] = matrizdato[num_burbuja][1] + resta.y/proportionY;
+        matrizdato[num_burbuja][2] = matrizdato[num_burbuja][2] + resta.z/proportionZ;
         window.pintarGrafico(null,matrizdato);
       }
       

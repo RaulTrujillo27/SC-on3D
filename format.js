@@ -50,24 +50,6 @@ function multiply(a, b) {
   return m;
 }
 
-
-window.crearproxyburbujas= function(matriz){
-    var proxymatriz = document.querySelector('#burbujasmatriz');
-    
-    proxymatriz.setAttribute('bubbles-simplified','data',JSON.stringify(matriz));
-    proxymatriz.setAttribute('bubbles-simplified','axis',true);
-    var burbujas = proxymatriz.firstChild.children;
-    for(let i =0; i<burbujas.length-3; i++){     
-      burbujas[i].setAttribute('posicionInicial',burbujas[i].components.position.attrValue.x +"," + burbujas[i].components.position.attrValue.y  +"," + burbujas[i].components.position.attrValue.z );
-      setTimeout(setGrabbable(burbujas[i]),5000);
-      burbujas[i].setAttribute('num_burbuja',i);
-    }
-}
-function setGrabbable(burbuja){
-       burbuja.setAttribute('grabbable','');
-       burbuja.setAttribute('recalculate-graphic','');
-}
-
 window.pintarGrafico = function(archive,matrix){
   if(archive == null){
     archive = archivo_actual;
@@ -78,6 +60,7 @@ window.pintarGrafico = function(archive,matrix){
   var m  = multiply(archive,matrix);
   burbujas.setAttribute('bubbles-simplified','axis',true);
   burbujas.setAttribute('bubbles-simplified','data',JSON.stringify(m));
+  burbujas.setAttribute('bubbles-simplified','dataMatrix',JSON.stringify(matrix));
 }
 
 
@@ -88,13 +71,12 @@ AFRAME.registerComponent('multiply-matrix', {
     },
     init: function(){
       //cambio altura
-      var geometry = this.el.getAttribute('geometry');
-      geometry.height = 0.1;
+      this.el.setAttribute('geometry','height', 0.05);
       //fin cambio altura
       var  archivo = this.data.archivo;
       var  matrizdato = this.data.matriz;
 
-      this.el.setAttribute('geometry', geometry);
+      
 
       this.el.addEventListener('click', function(){
 
@@ -108,7 +90,6 @@ AFRAME.registerComponent('multiply-matrix', {
                     return response.json();
                   })
                   .then(function(matrix) {
-                    crearproxyburbujas(matrix);
                     pintarGrafico(archive,matrix);
                   });
               });     
