@@ -79,7 +79,6 @@ AFRAME.registerComponent('recalculate-graphic', {
         let proportionY = this.el.getAttribute('proportionY');
         let proportionZ = this.el.getAttribute('proportionZ');
         let resta = {x: finalPosition.x -previousBubblePosition[0], y: finalPosition.y -previousBubblePosition[1] ,z: finalPosition.z - previousBubblePosition[2]};
-        console.log(matrizdato,num_burbuja,proportionX,proportionY,proportionZ,resta);
         matrizdato[num_burbuja][0] = matrizdato[num_burbuja][0] + resta.x/proportionX;
         matrizdato[num_burbuja][1] = matrizdato[num_burbuja][1] + resta.y/proportionY;
         matrizdato[num_burbuja][2] = matrizdato[num_burbuja][2] + resta.z/proportionZ;
@@ -87,6 +86,26 @@ AFRAME.registerComponent('recalculate-graphic', {
       }
       
     }
+  }
+});
+
+AFRAME.registerComponent('mirror-positioning', {
+
+  init: function () {
+    this.isGrabbed=false;
+    this.el.getAttribute('num-burbuja')
+    var fruitElements = document.querySelectorAll('[num-burbuja="'+this.el.getAttribute('num-burbuja')+'"]');
+    console.log(this.el)
+    fruitElements.forEach(function(entity) {
+      if(entity !== this.el){
+        console.log(entity);
+      }
+      
+    });
+  },
+
+  tick: function(){
+    
   }
 });
 

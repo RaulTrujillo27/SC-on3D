@@ -17,6 +17,8 @@ AFRAME.registerComponent('bubbles-simplified', {
         lengthMax: { type: 'number' ,default:10},
         widthMax: { type: 'number' ,default:10},
         radiusMax: { type: 'number' },
+        mirror:{type:'boolean',default:false},
+        onMirror:{type:'boolean',default:false}
     },
     
     visProperties: ['height', 'radius', 'x_axis', 'z_axis'],
@@ -51,6 +53,7 @@ AFRAME.registerComponent('bubbles-simplified', {
         const el = this.el;
         const color = data.color;
         const colorMatrix = data.colorMatrix;
+        let onMirror =  data.onMirror;
     
         let heightMax = data.heightMax
         let lengthMax = data.lengthMax
@@ -58,22 +61,27 @@ AFRAME.registerComponent('bubbles-simplified', {
         let radiusMax = data.radiusMax
 
         let xLabels = [];
-        let xTicks = [];
         let zLabels = [];
-        let zTicks = [];
         let stepX = 0
         let stepZ = 0
         let radius = 1
-    
-    
-        let valueMaxXData = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.x_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.x_axis]; }))))
-        let valueMaxYData = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.height]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.height]; }))))      
-        let valueMaxZData = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.z_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.z_axis]; }))))
-        
-        let valueMaxXMatrix = Math.max(Math.abs(Math.max.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.x_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.x_axis]; }))))
-        let valueMaxYMatrix = Math.max(Math.abs(Math.max.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.height]; }))),Math.abs(Math.min.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.height]; }))))      
-        let valueMaxZMatrix = Math.max(Math.abs(Math.max.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.z_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.z_axis]; }))))
-        
+        let valueMaxXData = 0;
+        let valueMaxYData = 0;
+        let valueMaxZData = 0;
+        let valueMaxXMatrix = 0;
+        let valueMaxYMatrix = 0;
+        let valueMaxZMatrix = 0;
+        if(dataToPrint.length>0){
+            valueMaxXData = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.x_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.x_axis]; }))))
+            valueMaxYData = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.height]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.height]; }))))      
+            valueMaxZData = Math.max(Math.abs(Math.max.apply(Math, dataToPrint.map(function (o) { return o[data.z_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrint.map(function (o) { return o[data.z_axis]; }))))
+            
+        }
+        if(dataToPrintMatrix.length>0){
+            valueMaxXMatrix = Math.max(Math.abs(Math.max.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.x_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.x_axis]; }))))
+            valueMaxYMatrix = Math.max(Math.abs(Math.max.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.height]; }))),Math.abs(Math.min.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.height]; }))))      
+            valueMaxZMatrix = Math.max(Math.abs(Math.max.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.z_axis]; }))),Math.abs(Math.min.apply(Math, dataToPrintMatrix.map(function (o) { return o[data.z_axis]; }))))  
+        }
         let valueMaxX = Math.max(valueMaxXData,valueMaxXMatrix);
         let valueMaxY = Math.max(valueMaxYData,valueMaxYMatrix);
         let valueMaxZ = Math.max(valueMaxZData,valueMaxZMatrix);
@@ -82,41 +90,62 @@ AFRAME.registerComponent('bubbles-simplified', {
         proportionY = heightMax / valueMaxY
         proportionZ = widthMax / valueMaxZ
 
+        
         if (!radiusMax) {
             radiusMax = radius
         }
+
         radius_scale = radiusMax / radius
         this.chartEl = document.createElement('a-entity');
         this.chartEl.classList.add('babiaxrChart')
         el.appendChild(this.chartEl)
     
-            
-
+        
+        if(this.data.mirror && dataToPrintMatrix.length>0){
+            const posicion = this.el.getAttribute('position'); 
+            this.data.mirror=false;
+            let mirrorSpace = document.createElement('a-box');
+            el.parentEl.appendChild(mirrorSpace);
+            mirrorSpace.setAttribute('opacity',0.1);
+            mirrorSpace.setAttribute('width',widthMax/2);
+            mirrorSpace.setAttribute('height',heightMax/2);
+            mirrorSpace.setAttribute('depth',lengthMax/2);
+            mirrorSpace.setAttribute('position',{
+                x:posicion.x+lengthMax+mirrorSpace.getAttribute('width')/2,
+                y:posicion.y-heightMax+mirrorSpace.getAttribute('height')/2,
+                z:posicion.z+lengthMax+mirrorSpace.getAttribute('depth')/2
+            });
+            let espejo = document.createElement('a-entity');
+            mirrorSpace.appendChild(espejo);
+            espejo.setAttribute('bubbles-simplified',{'radiusMax': radiusMax/2, 'heightMax':heightMax/4, 'lengthMax':lengthMax/4, 
+                'widthMax':widthMax/4,'data':[],'dataMatrix':data.dataMatrix,'x_axis': 0, 'z_axis': 2, 'height': 1,'onMirror':true});
+        }
+        
         let i = 0;
         for (let bubble of dataToPrintMatrix) {
-            
             let xLabel = bubble[data.x_axis]
             let zLabel = bubble[data.z_axis]
             let height = bubble[data.height]
             
                 
             stepX = xLabel * proportionX
-
-
             xLabels.push(xLabel)
-            //xTicks.push(stepX)
                
             stepZ = zLabel * proportionZ
-            
             zLabels.push(zLabel)
-            //zTicks.push(stepZ)
-    
+
+            
             
             let bubbleEntity = generateBubble(height,radius, stepX, stepZ, proportionX, proportionY, proportionZ, radius_scale, colorMatrix);
             this.chartEl.appendChild(bubbleEntity);
-            bubbleEntity.setAttribute('posicionInicial',bubbleEntity.components.position.attrValue.x +"," + bubbleEntity.components.position.attrValue.y  +"," + bubbleEntity.components.position.attrValue.z );
+            if(onMirror){
+                bubbleEntity.setAttribute('mirror-positioning','');
+            }else{
+                bubbleEntity.setAttribute('posicionInicial',bubbleEntity.components.position.attrValue.x +"," + bubbleEntity.components.position.attrValue.y  +"," + bubbleEntity.components.position.attrValue.z );
+                bubbleEntity.setAttribute('recalculate-graphic','');
+            }
             setTimeout(setGrabbable(bubbleEntity),5000);
-            bubbleEntity.setAttribute('num_burbuja',i);
+            bubbleEntity.setAttribute('num-burbuja',i);
             i++;
             //Prepare legend
             if (data.legend) {
@@ -130,13 +159,13 @@ AFRAME.registerComponent('bubbles-simplified', {
             
                 
             stepX = xLabel * proportionX
-
+            
 
             xLabels.push(xLabel)
             //xTicks.push(stepX)
                
             stepZ = zLabel * proportionZ
-            
+             
             zLabels.push(zLabel)
             //zTicks.push(stepZ)
     
@@ -193,18 +222,16 @@ AFRAME.registerComponent('bubbles-simplified', {
 
 function setGrabbable(burbuja){
     burbuja.setAttribute('grabbable','');
-    burbuja.setAttribute('recalculate-graphic','');
+    
 }
 
 function generateBubble( height, radius, positionX, positionZ, proportionX, proportionY, proportionZ, radius_scale, color) {
-
     if (proportionY) {
         height = proportionY * height
     }
     if (radius_scale) {
         radius = radius_scale * radius
     }
-
     let entity = document.createElement('a-sphere');
     entity.setAttribute('radius', radius);
     entity.setAttribute('color',color);
