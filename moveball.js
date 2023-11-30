@@ -68,13 +68,14 @@ AFRAME.registerComponent('recalculate-graphic', {
     if(this.el.components.grabbable.grabbed){
       this.isGrabbed=true;
     }
-    if(!this.el.components.grabbable.grabbed && this.isGrabbed){
+    if(!this.el.components.grabbable.grabbed && this.isGrabbed || this.el.getAttribute('refrescar')){
+      this.el.setAttribute('refrescar',false)
       this.isGrabbed=false;
       let finalPosition = this.el.getAttribute('position');
       let previousBubblePosition = this.el.getAttribute('posicionInicial').split(",");
       if(finalPosition.x!=previousBubblePosition[0] ||finalPosition.y!=previousBubblePosition[1] ||finalPosition.z!=previousBubblePosition[2]){
         let matrizdato = JSON.parse(document.querySelector('#bubblesrealdata').getAttribute('bubbles-simplified').dataMatrix);
-        let num_burbuja = this.el.getAttribute('num_burbuja');
+        let num_burbuja = this.el.getAttribute('num-burbuja');
         let proportionX = this.el.getAttribute('proportionX');
         let proportionY = this.el.getAttribute('proportionY');
         let proportionZ = this.el.getAttribute('proportionZ');
@@ -87,25 +88,41 @@ AFRAME.registerComponent('recalculate-graphic', {
       
     }
   }
+  
 });
 
 AFRAME.registerComponent('mirror-positioning', {
 
+
   init: function () {
-    this.isGrabbed=false;
-    this.el.getAttribute('num-burbuja')
-    var fruitElements = document.querySelectorAll('[num-burbuja="'+this.el.getAttribute('num-burbuja')+'"]');
-    console.log(this.el)
-    fruitElements.forEach(function(entity) {
-      if(entity !== this.el){
-        console.log(entity);
-      }
-      
+    var mirrorBubbles = document.querySelectorAll('[num-burbuja="'+this.el.getAttribute('num-burbuja')+'"]');
+    let el = this.el;
+    let value;
+    mirrorBubbles.forEach(function(entity) {
+      if(entity.getAttribute('radius') != el.getAttribute('radius')){
+        value = entity;
+        
+      } 
     });
+    this.mirror = value;
+    this.isGrabbed=false;
   },
 
   tick: function(){
-    
+    if(this.el.components.grabbable.grabbed){
+      this.isGrabbed=true;
+      let bubblePosition =this.el.getAttribute('position');
+      this.mirror.setAttribute('position',{
+        x:(bubblePosition.x/this.el.getAttribute('proportionX'))*this.mirror.getAttribute('proportionX'),
+        y:(bubblePosition.y/this.el.getAttribute('proportionY'))*this.mirror.getAttribute('proportionY'),
+        z:(bubblePosition.z/this.el.getAttribute('proportionZ'))*this.mirror.getAttribute('proportionZ')
+      });
+      
+    }
+    if(!this.el.components.grabbable.grabbed && this.isGrabbed){
+      this.mirror.setAttribute('refrescar',true); 
+      this.isGrabbed=false;
+    }
   }
 });
 

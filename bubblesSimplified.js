@@ -102,23 +102,23 @@ AFRAME.registerComponent('bubbles-simplified', {
     
         
         if(this.data.mirror && dataToPrintMatrix.length>0){
-            const posicion = this.el.getAttribute('position'); 
             this.data.mirror=false;
             let mirrorSpace = document.createElement('a-box');
-            el.parentEl.appendChild(mirrorSpace);
+            el.appendChild(mirrorSpace);
             mirrorSpace.setAttribute('opacity',0.1);
             mirrorSpace.setAttribute('width',widthMax/2);
             mirrorSpace.setAttribute('height',heightMax/2);
             mirrorSpace.setAttribute('depth',lengthMax/2);
             mirrorSpace.setAttribute('position',{
-                x:posicion.x+lengthMax+mirrorSpace.getAttribute('width')/2,
-                y:posicion.y-heightMax+mirrorSpace.getAttribute('height')/2,
-                z:posicion.z+lengthMax+mirrorSpace.getAttribute('depth')/2
+                x:lengthMax+mirrorSpace.getAttribute('width')/2,
+                y:-heightMax+mirrorSpace.getAttribute('width')/2,
+                z:lengthMax+mirrorSpace.getAttribute('depth')/2
             });
             let espejo = document.createElement('a-entity');
             mirrorSpace.appendChild(espejo);
             espejo.setAttribute('bubbles-simplified',{'radiusMax': radiusMax/2, 'heightMax':heightMax/4, 'lengthMax':lengthMax/4, 
                 'widthMax':widthMax/4,'data':[],'dataMatrix':data.dataMatrix,'x_axis': 0, 'z_axis': 2, 'height': 1,'onMirror':true});
+            this.data.mirror=true;
         }
         
         let i = 0;
