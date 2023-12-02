@@ -56,7 +56,7 @@ window.pintarGrafico = function(archive,matrix){
   }else{
     archivo_actual = archive;
   }
-  var burbujas = document.querySelector('#bubblesrealdata');
+  var burbujas = document.querySelector('[bubbles-simplified]');
   var m  = multiply(archive,matrix);
   burbujas.setAttribute('bubbles-simplified',{'axis':true,'data':JSON.stringify(m),'dataMatrix':JSON.stringify(matrix)});
 }
