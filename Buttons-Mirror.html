@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>Demo with selector and mirror</title>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-babia-components/dist/aframe-babia-components.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.0.0/dist/aframe-environment-component.min.js"></script>
@@ -27,7 +28,7 @@
       <!-- Bubbles data -->
         
         <a-entity position="0 2 -2" lounge-plinth="width: 6.5; depth: 6; height: 0.25" lounge-staydown>
-          <a-entity id="bubblesrealdata" bubbles-simplified='legend: true; legend_scale:0.1; axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
+          <a-entity id="hola" bubbles-simplified='legend: true; legend_scale:0.1; axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
             x_axis: 0; z_axis: 2; height: 1; mirror:true' position="-1 2.25 0" > 
           </a-entity>
           
@@ -41,10 +42,10 @@
                 position="-0.375 0.15 0.05"
                 color="#2B2A4C"
                 rotation="90 0 0"
-                height="1"
+                height="0.125 "
                 width="0.125"
                 depth="0.125"
-                multiply-matrix="archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"
+                multiply-matrix="withButton:true;archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"
                 >
               </a-box>
               <a-text position="-0.27 0.15 0.01" value="-   Cereals" color="black" width="2"></a-text>
@@ -54,10 +55,10 @@
                 position="-0.375 0 0.05"
                 color="#2B2A4C"
                 rotation="90 0 0"
-                heigth="0.25"
+                height="0.125"
                 width="0.125"
                 depth="0.125"
-                multiply-matrix="archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"
+                multiply-matrix="withButton:true;archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"
                 >
               </a-box>
               <a-text position="-0.27 0 0.01" value="-   Olives" color="black" width="2"></a-text>
@@ -67,10 +68,10 @@
                 position="-0.375 -0.15 0.05"
                 color="#2B2A4C"
                 rotation="90 0 0"
-                heigth="0.25"
+                height="0.125"
                 width="0.125"
                 depth="0.125"
-                multiply-matrix="archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"
+                multiply-matrix="withButton:true;archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"
                 >
               </a-box>
               <a-text position="-0.27 -0.15 0.01" value="-   Parkinson" color="black" width="2"></a-text>
@@ -86,7 +87,7 @@
       <a-light type="point" intensity="0.3" position="0 3 0"></a-light>
       <a-light type="ambient" intensity="0.5" position="0 3 0"></a-light>
       
-      <a-entity position="0 2.5 3" movement-controls="fly:true; speed:0.1">
+      <a-entity position="0 3 3" movement-controls="fly:true; speed:0.1">
         <a-entity sphere-collider="objects:a-box" super-hands hand-controls="hand: left"></a-entity>
         <a-entity sphere-collider="objects:a-sphere" super-hands hand-controls="hand: right"></a-entity>
         <a-entity camera look-controls 

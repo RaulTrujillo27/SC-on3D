@@ -111,7 +111,7 @@ AFRAME.registerComponent('bubbles-simplified', {
             mirrorSpace.setAttribute('depth',lengthMax/2);
             mirrorSpace.setAttribute('position',{
                 x:lengthMax+mirrorSpace.getAttribute('width')/2,
-                y:-heightMax+mirrorSpace.getAttribute('width')/2,
+                y:-heightMax+mirrorSpace.getAttribute('height')/2,
                 z:lengthMax+mirrorSpace.getAttribute('depth')/2
             });
             let espejo = document.createElement('a-entity');

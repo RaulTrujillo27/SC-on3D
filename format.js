@@ -1,4 +1,6 @@
-let archivo_actual ;
+let archivos =[];
+let archivo_actual;
+let num_grafico= 0;
 function normalizardatos(matrix){
   const columnMeans = [];
   for (let col = 0; col < matrix[0].length; col++) {
@@ -34,8 +36,7 @@ function normalizardatos(matrix){
 function multiply(a, b) {
   var aNumRows = a.length, aNumCols = Object.values(a[0]).length,
        bNumCols = Object.values(b[0]).length,
-      m = new Array(aNumRows); 
-
+      m = new Array(aNumRows);
   for (var r = 0; r < aNumRows; ++r) {
     m[r] = new Array(bNumCols); 
     for (var c = 0; c < bNumCols; ++c) {
@@ -50,13 +51,31 @@ function multiply(a, b) {
   return m;
 }
 
-window.pintarGrafico = function(archive,matrix){
-  if(archive == null){
-    archive = archivo_actual;
+window.pintarGrafico = function(archive,matrix,myEntityId){
+  var burbujas;
+  var graficosOnScreen = Array.from(document.querySelectorAll('[bubbles-simplified]')).filter(element => element.getAttribute('bubbles-simplified').onMirror != true);
+  //var graficosSinMirrors = graficosOnScreen.filter(element => element.getAttribute('bubbles-simplified').onMirror == true)
+  console.log(graficosOnScreen)
+  if(myEntityId && graficosOnScreen.length>1){
+    //Tendremos más de un gráfico en la escena
+    burbujas = document.querySelector('#'+myEntityId);
+    if(archive == null || burbujas.getAttribute('numero')){
+      archive = archivos[burbujas.getAttribute('numero')];
+    }else{
+      archivos[num_grafico] = archive;
+      burbujas.setAttribute('numero',num_grafico);
+      num_grafico++;
+    }
   }else{
-    archivo_actual = archive;
+    //Solo tenemos un gráfico en la escena
+    burbujas = document.querySelector('[bubbles-simplified]'); 
+    if(archive == null ){
+      archive = archivo_actual;
+   }else{
+      archivo_actual = archive;
+   }
+    
   }
-  var burbujas = document.querySelector('[bubbles-simplified]');
   var m  = multiply(archive,matrix);
   burbujas.setAttribute('bubbles-simplified',{'axis':true,'data':JSON.stringify(m),'dataMatrix':JSON.stringify(matrix)});
 }
@@ -64,35 +83,40 @@ window.pintarGrafico = function(archive,matrix){
 
 AFRAME.registerComponent('multiply-matrix', {
     schema:{
+        myEntityId:{type:'string'},
+        withButton:{type:'boolean',default:false},
         archivo: { type:'string',default:''},
         matriz: { type: 'string',default:''}
     },
     init: function(){
-      //cambio altura
-      this.el.setAttribute('geometry','height', 0.05);
-      //fin cambio altura
       var  archivo = this.data.archivo;
       var  matrizdato = this.data.matriz;
+      var  myEntityId = this.data.myEntityId;
+      var withButton = this.data.withButton;
 
-      
-
-      this.el.addEventListener('click', function(){
-
-            fetch(archivo)
-              .then(function(response) {
-                return response.json();
-              })
-              .then(function(archive) {
-                fetch(matrizdato)
-                  .then(function(response) {
-                    return response.json();
-                  })
-                  .then(function(matrix) {
-                    pintarGrafico(archive,matrix);
-                  });
-              });     
-      })      
+      if(withButton){
+        this.el.addEventListener('click', function(){
+          formatfiles(archivo,matrizdato,myEntityId);
+        })    
+      }else{
+        formatfiles(archivo,matrizdato,myEntityId);
+      }
+        
     }             
   });
 
-
+function formatfiles(archivo,matrizdato,myEntityId){
+  fetch(archivo)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(archive) {
+      fetch(matrizdato)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(matrix) {
+          pintarGrafico(archive,matrix,myEntityId);
+        });
+    }); 
+}
