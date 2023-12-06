@@ -10,6 +10,7 @@ AFRAME.registerComponent('recalculate-graphic', {
       this.isGrabbed=true;
     }
     if(!this.el.components.grabbable.grabbed && this.isGrabbed || this.el.getAttribute('refrescar')){
+      console.log("hola")
       this.el.setAttribute('refrescar',false)
       this.isGrabbed=false;
       let finalPosition = this.el.getAttribute('position');
@@ -36,13 +37,12 @@ AFRAME.registerComponent('mirror-positioning', {
 
 
   init: function () {
-    var mirrorBubbles = document.querySelectorAll('[num-burbuja="'+this.el.getAttribute('num-burbuja')+'"]');
+    var mirrorBubbles = this.el.parentEl.parentEl.parentEl.parentEl.querySelectorAll('[num-burbuja="'+this.el.getAttribute('num-burbuja')+'"]');
     let el = this.el;
     let value;
     mirrorBubbles.forEach(function(entity) {
       if(entity.getAttribute('radius') != el.getAttribute('radius')){
         value = entity;
-        
       } 
     });
     this.mirror = value;
@@ -51,6 +51,7 @@ AFRAME.registerComponent('mirror-positioning', {
 
   tick: function(){
     if(this.el.components.grabbable.grabbed){
+      
       this.isGrabbed=true;
       let bubblePosition =this.el.getAttribute('position');
       this.mirror.setAttribute('position',{
@@ -58,7 +59,6 @@ AFRAME.registerComponent('mirror-positioning', {
         y:(bubblePosition.y/this.el.getAttribute('proportionY'))*this.mirror.getAttribute('proportionY'),
         z:(bubblePosition.z/this.el.getAttribute('proportionZ'))*this.mirror.getAttribute('proportionZ')
       });
-      
     }
     if(!this.el.components.grabbable.grabbed && this.isGrabbed){
       this.mirror.setAttribute('refrescar',true); 

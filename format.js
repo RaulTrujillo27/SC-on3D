@@ -54,8 +54,7 @@ function multiply(a, b) {
 window.pintarGrafico = function(archive,matrix,myEntityId){
   var burbujas;
   var graficosOnScreen = Array.from(document.querySelectorAll('[bubbles-simplified]')).filter(element => element.getAttribute('bubbles-simplified').onMirror != true);
-  //var graficosSinMirrors = graficosOnScreen.filter(element => element.getAttribute('bubbles-simplified').onMirror == true)
-  console.log(graficosOnScreen)
+
   if(myEntityId && graficosOnScreen.length>1){
     //Tendremos más de un gráfico en la escena
     burbujas = document.querySelector('#'+myEntityId);
