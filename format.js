@@ -51,7 +51,7 @@ function multiply(a, b) {
   return m;
 }
 
-window.pintarGrafico = function(archive,matrix,myEntityId){
+window.pintarGrafico = function(archive,matrix,myEntityId,myMirrorId){
   var burbujas;
   var graficosOnScreen = Array.from(document.querySelectorAll('[bubbles-simplified]')).filter(element => element.getAttribute('bubbles-simplified').onMirror != true);
 
@@ -76,12 +76,13 @@ window.pintarGrafico = function(archive,matrix,myEntityId){
     
   }
   var m  = multiply(archive,matrix);
-  burbujas.setAttribute('bubbles-simplified',{'axis':true,'data':JSON.stringify(m),'dataMatrix':JSON.stringify(matrix)});
+  burbujas.setAttribute('bubbles-simplified',{'mirrorPosition':myMirrorId,'axis':true,'data':JSON.stringify(m),'dataMatrix':JSON.stringify(matrix)});
 }
 
 
 AFRAME.registerComponent('multiply-matrix', {
     schema:{
+        myMirrorId:{type:'string'},
         myEntityId:{type:'string'},
         withButton:{type:'boolean',default:false},
         archivo: { type:'string',default:''},
@@ -91,20 +92,21 @@ AFRAME.registerComponent('multiply-matrix', {
       var  archivo = this.data.archivo;
       var  matrizdato = this.data.matriz;
       var  myEntityId = this.data.myEntityId;
+      var  myMirrorId = this.data.myMirrorId;
       var withButton = this.data.withButton;
 
       if(withButton){
         this.el.addEventListener('click', function(){
-          formatfiles(archivo,matrizdato,myEntityId);
+          formatfiles(archivo,matrizdato,myEntityId,myMirrorId);
         })    
       }else{
-        formatfiles(archivo,matrizdato,myEntityId);
+        formatfiles(archivo,matrizdato,myEntityId,myMirrorId);
       }
         
     }             
   });
 
-function formatfiles(archivo,matrizdato,myEntityId){
+function formatfiles(archivo,matrizdato,myEntityId,myMirrorId){
   fetch(archivo)
     .then(function(response) {
       return response.json();
@@ -115,7 +117,7 @@ function formatfiles(archivo,matrizdato,myEntityId){
           return response.json();
         })
         .then(function(matrix) {
-          pintarGrafico(archive,matrix,myEntityId);
+          pintarGrafico(archive,matrix,myEntityId,myMirrorId);
         });
     }); 
 }

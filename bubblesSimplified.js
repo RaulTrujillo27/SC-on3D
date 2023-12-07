@@ -18,6 +18,7 @@ AFRAME.registerComponent('bubbles-simplified', {
         widthMax: { type: 'number' ,default:10},
         radiusMax: { type: 'number' },
         mirror:{type:'boolean',default:false},
+        mirrorPosition:{type:'string'},
         onMirror:{type:'boolean',default:false}
     },
     
@@ -53,6 +54,7 @@ AFRAME.registerComponent('bubbles-simplified', {
         const el = this.el;
         const color = data.color;
         const colorMatrix = data.colorMatrix;
+        const mirrorPosition = data.mirrorPosition;
         let onMirror =  data.onMirror;
     
         let heightMax = data.heightMax
@@ -109,11 +111,21 @@ AFRAME.registerComponent('bubbles-simplified', {
             mirrorSpace.setAttribute('width',widthMax/2);
             mirrorSpace.setAttribute('height',heightMax/2);
             mirrorSpace.setAttribute('depth',lengthMax/2);
-            mirrorSpace.setAttribute('position',{
-                x:lengthMax+mirrorSpace.getAttribute('width')/2,
-                y:-heightMax+mirrorSpace.getAttribute('height')/2,
-                z:lengthMax+mirrorSpace.getAttribute('depth')/2
-            });
+            let userWantedPosition = document.querySelector('#'+mirrorPosition);
+            if(mirrorPosition && userWantedPosition){          
+                mirrorSpace.setAttribute('position',{
+                    x:userWantedPosition.getAttribute('position').x,
+                    y:userWantedPosition.getAttribute('position').y,
+                    z:userWantedPosition.getAttribute('position').z
+                });
+            }else{
+                mirrorSpace.setAttribute('position',{
+                    x:lengthMax+mirrorSpace.getAttribute('width')/2,
+                    y:-heightMax+mirrorSpace.getAttribute('height')/2,
+                    z:lengthMax+mirrorSpace.getAttribute('depth')/2
+                });
+            }  
+            console.log(mirrorSpace.getAttribute('position'))
             let espejo = document.createElement('a-entity');
             mirrorSpace.appendChild(espejo);
             espejo.setAttribute('bubbles-simplified',{'radiusMax': radiusMax/2, 'heightMax':heightMax/4, 'lengthMax':lengthMax/4, 
