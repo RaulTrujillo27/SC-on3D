@@ -76,7 +76,7 @@ window.pintarGrafico = function(archive,matrix,myEntityId,myMirrorId){
     
   }
   var m  = multiply(archive,matrix);
-  burbujas.setAttribute('bubbles-simplified',{'mirrorPosition':myMirrorId,'axis':true,'data':JSON.stringify(m),'dataMatrix':JSON.stringify(matrix)});
+  burbujas.setAttribute('bubbles-simplified',{'graphicPosition':myEntityId,'mirrorPosition':myMirrorId,'axis':true,'data':JSON.stringify(m),'dataMatrix':JSON.stringify(matrix)});
 }
 
 

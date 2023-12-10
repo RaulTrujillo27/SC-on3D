@@ -19,6 +19,7 @@ AFRAME.registerComponent('bubbles-simplified', {
         radiusMax: { type: 'number' },
         mirror:{type:'boolean',default:false},
         mirrorPosition:{type:'string'},
+        graphicPosition:{type:'string'},
         onMirror:{type:'boolean',default:false}
     },
     
@@ -55,6 +56,7 @@ AFRAME.registerComponent('bubbles-simplified', {
         const color = data.color;
         const colorMatrix = data.colorMatrix;
         const mirrorPosition = data.mirrorPosition;
+        const graphicPosition = data.graphicPosition;
         let onMirror =  data.onMirror;
     
         let heightMax = data.heightMax
@@ -111,13 +113,13 @@ AFRAME.registerComponent('bubbles-simplified', {
             mirrorSpace.setAttribute('width',widthMax/2);
             mirrorSpace.setAttribute('height',heightMax/2);
             mirrorSpace.setAttribute('depth',lengthMax/2);
-            let userWantedPosition = document.querySelector('#'+mirrorPosition);
-            if(mirrorPosition && userWantedPosition){          
-                mirrorSpace.setAttribute('position',{
-                    x:userWantedPosition.getAttribute('position').x,
-                    y:userWantedPosition.getAttribute('position').y,
-                    z:userWantedPosition.getAttribute('position').z
-                });
+            let userWantedPosition;
+            let parentId;
+            if(mirrorPosition){
+                userWantedPosition = document.querySelector('#'+mirrorPosition);
+            }
+            if(userWantedPosition){         
+                userWantedPosition.appendChild(mirrorSpace);
             }else{
                 mirrorSpace.setAttribute('position',{
                     x:lengthMax+mirrorSpace.getAttribute('width')/2,
@@ -125,11 +127,10 @@ AFRAME.registerComponent('bubbles-simplified', {
                     z:lengthMax+mirrorSpace.getAttribute('depth')/2
                 });
             }  
-            console.log(mirrorSpace.getAttribute('position'))
             let espejo = document.createElement('a-entity');
             mirrorSpace.appendChild(espejo);
-            espejo.setAttribute('bubbles-simplified',{'radiusMax': radiusMax/2, 'heightMax':heightMax/4, 'lengthMax':lengthMax/4, 
-                'widthMax':widthMax/4,'data':[],'dataMatrix':data.dataMatrix,'x_axis': 0, 'z_axis': 2, 'height': 1,'onMirror':true});
+            espejo.setAttribute('bubbles-simplified',{'graphicPosition':graphicPosition,'mirrorPosition':mirrorPosition,'radiusMax': radiusMax/2, 'heightMax':heightMax/4, 'lengthMax':lengthMax/4, 
+                'widthMax':widthMax/4,'data':[],'dataMatrix':data.dataMatrix,'colorMatrix':colorMatrix,'x_axis': 0, 'z_axis': 2, 'height': 1,'onMirror':true});
             this.data.mirror=true;
         }
         
@@ -151,7 +152,7 @@ AFRAME.registerComponent('bubbles-simplified', {
             let bubbleEntity = generateBubble(height,radius, stepX, stepZ, proportionX, proportionY, proportionZ, radius_scale, colorMatrix);
             this.chartEl.appendChild(bubbleEntity);
             if(onMirror){
-                bubbleEntity.setAttribute('mirror-positioning','');
+                bubbleEntity.setAttribute('mirror-positioning',{'repositionEntityId':graphicPosition});
             }else{
                 bubbleEntity.setAttribute('posicionInicial',bubbleEntity.components.position.attrValue.x +"," + bubbleEntity.components.position.attrValue.y  +"," + bubbleEntity.components.position.attrValue.z );
                 bubbleEntity.setAttribute('recalculate-graphic','');

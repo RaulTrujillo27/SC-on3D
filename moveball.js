@@ -10,7 +10,6 @@ AFRAME.registerComponent('recalculate-graphic', {
       this.isGrabbed=true;
     }
     if(!this.el.components.grabbable.grabbed && this.isGrabbed || this.el.getAttribute('refrescar')){
-      console.log("hola")
       this.el.setAttribute('refrescar',false)
       this.isGrabbed=false;
       let finalPosition = this.el.getAttribute('position');
@@ -34,10 +33,17 @@ AFRAME.registerComponent('recalculate-graphic', {
 });
 
 AFRAME.registerComponent('mirror-positioning', {
-
-
+  schema:{
+    repositionEntityId:{type:'string'}
+},
   init: function () {
-    var mirrorBubbles = this.el.parentEl.parentEl.parentEl.parentEl.querySelectorAll('[num-burbuja="'+this.el.getAttribute('num-burbuja')+'"]');
+    var mirrorBubbles;
+    let repositionated = this.data.repositionEntityId;
+    if(repositionated){
+      mirrorBubbles = document.querySelector('#'+repositionated).querySelectorAll('[num-burbuja="'+this.el.getAttribute('num-burbuja')+'"]');
+    }else{
+      mirrorBubbles = this.el.parentEl.parentEl.parentEl.parentEl.querySelectorAll('[num-burbuja="'+this.el.getAttribute('num-burbuja')+'"]');
+    }
     let el = this.el;
     let value;
     mirrorBubbles.forEach(function(entity) {
@@ -61,7 +67,10 @@ AFRAME.registerComponent('mirror-positioning', {
       });
     }
     if(!this.el.components.grabbable.grabbed && this.isGrabbed){
-      this.mirror.setAttribute('refrescar',true); 
+      this.mirror.setAttribute('refrescar',true);
+      console.log(this.el.parentEl.parentEl)
+      while (this.el.parentEl.parentEl.firstChild)
+            this.el.parentEl.parentEl.firstChild.remove();
       this.isGrabbed=false;
     }
   }

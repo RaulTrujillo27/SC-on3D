@@ -20,33 +20,32 @@
   <body>    
     
     <a-scene >
-      
         <a-entity id="lounge" position="0 4 0" lounge="width: 20; depth: 15; height: 5;
-                            floorTexture: assets/floor-texture.jpg">
+                            floorTexture: assets/floor-texture3.jpg;wallColor:#C8AE7D;west:glass;east:glass">
 
       <!-- Bubbles data -->
         
-            <a-entity position="-7 2 2" rotation ="0 90 0" lounge-plinth="width: 6.5; depth: 6; height: 0.25" lounge-staydown>
-                <a-entity id="graphic1" bubbles-simplified='legend: true; legend_scale:0.1; axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
-                    x_axis: 0; z_axis: 2; height: 1; mirror:true' position="-1 2.25 0" > 
-                </a-entity>
-            </a-entity>
-            <a-entity position="0 2 -5" lounge-plinth="width: 6.5; depth: 6; height: 0.25" lounge-staydown>
-                <a-entity id="graphic2" bubbles-simplified='legend: true; legend_scale:0.1; axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
-                    x_axis: 0; z_axis: 2; height: 1; mirror:true' position="-1 2.25 0" > 
-                </a-entity>
-            </a-entity>
-            <a-entity position="7 2 2" rotation ="0 -90 0" lounge-plinth="width: 6.5; depth: 6; height: 0.25" lounge-staydown>
-                <a-entity id="graphic3" bubbles-simplified='legend: true; legend_scale:0.1; axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
-                    x_axis: 0; z_axis: 2; height: 1; mirror:true' position="-1 2.25 0" > 
-                </a-entity>
-            </a-entity>
+          <a-entity position="-6 2 -5" lounge-plinth="width: 4; depth: 4; height: 0.25" lounge-staydown>
+              <a-entity id="graphic1" bubbles-simplified='legend: true; legend_scale:0.1; axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
+                  x_axis: 0; z_axis: 2; height: 1; mirror:true;color:#CD5C08;colorMatrix:#F4CE14' position="0 2.25 0" > 
+              </a-entity>
+          </a-entity>
+          <a-entity position="0 2 -5" lounge-plinth="width: 4; depth: 4; height: 0.25" lounge-staydown>
+              <a-entity id="graphic2" bubbles-simplified='legend: true; legend_scale:0.1; axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
+                  x_axis: 0; z_axis: 2; height: 1; mirror:true' position="0 2.25 0" > 
+              </a-entity>
+          </a-entity>
+          <a-entity position="6 2 -5" lounge-plinth="width: 4; depth: 4; height: 0.25" lounge-staydown>
+              <a-entity id="graphic3" bubbles-simplified='legend: true; legend_scale:0.1; axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
+                  x_axis: 0; z_axis: 2; height: 1; mirror:true;color:#C3ACD0;colorMatrix:#711DB0' position="0 2.25 0" > 
+              </a-entity>
+          </a-entity>
+          <a-entity id="placeMirror1" position="-2 -1.75 1" multiply-matrix="myMirrorId:placeMirror1; myEntityId:graphic1; archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"></a-entity>
+          <a-entity id="placeMirror2" position="0 -1.75 1" multiply-matrix="myMirrorId:placeMirror2; myEntityId:graphic2; archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"></a-entity>
+          <a-entity id="placeMirror3" position="2 -1.75 1" multiply-matrix="myMirrorId:placeMirror3; myEntityId:graphic3; archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"></a-entity>
         
         </a-entity>
-        <a-entity id="placeMirror1" position="-3 3 -1" multiply-matrix="myMirrorId:placeMirror1; myEntityId:graphic1; archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"></a-entity>
-        <a-entity id="placeMirror2" position="0 3 -1" multiply-matrix="myMirrorId:placeMirror2; myEntityId:graphic2; archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"></a-entity>
-        <a-entity id="placeMirror3" position="3 3 -1" multiply-matrix="myMirrorId:placeMirror3; myEntityId:graphic3; archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"></a-entity>
-      
+        
       <!-- Light -->
         <a-light type="point" intensity="0.3" position="0 3 0"></a-light>
         <a-light type="ambient" intensity="0.5" position="0 3 0"></a-light>
