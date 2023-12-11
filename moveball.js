@@ -56,10 +56,12 @@ AFRAME.registerComponent('mirror-positioning', {
   },
 
   tick: function(){
+    let mirrorPosition=this.mirror.getAttribute('position');;
     if(this.el.components.grabbable.grabbed){
       
       this.isGrabbed=true;
       let bubblePosition =this.el.getAttribute('position');
+      
       this.mirror.setAttribute('position',{
         x:(bubblePosition.x/this.el.getAttribute('proportionX'))*this.mirror.getAttribute('proportionX'),
         y:(bubblePosition.y/this.el.getAttribute('proportionY'))*this.mirror.getAttribute('proportionY'),
@@ -68,9 +70,10 @@ AFRAME.registerComponent('mirror-positioning', {
     }
     if(!this.el.components.grabbable.grabbed && this.isGrabbed){
       this.mirror.setAttribute('refrescar',true);
-      console.log(this.el.parentEl.parentEl)
-      while (this.el.parentEl.parentEl.firstChild)
+      if(mirrorPosition.x !=this.mirror.getAttribute('position').x || mirrorPosition.y != this.mirror.getAttribute('position').y||mirrorPosition.z != this.mirror.getAttribute('position').z){
+        while (this.el.parentEl.parentEl.firstChild)
             this.el.parentEl.parentEl.firstChild.remove();
+      }
       this.isGrabbed=false;
     }
   }
