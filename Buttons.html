@@ -86,10 +86,10 @@
       <a-light type="point" intensity="0.3" position="0 3 0"></a-light>
       <a-light type="ambient" intensity="0.5" position="0 3 0"></a-light>
       
-      <a-entity position="0 3 2" movement-controls="fly:true; speed:0.1">
+      <a-entity position="0 1 2" movement-controls="fly:true; speed:0.1">
         <a-entity sphere-collider="objects:a-box" super-hands hand-controls="hand: left"></a-entity>
         <a-entity sphere-collider="objects:a-sphere" super-hands hand-controls="hand: right"></a-entity>
-        <a-entity camera look-controls 
+        <a-entity position="0 2 0" camera look-controls 
                   capture-mouse
                   cursor="rayOrigin:mouse"
                   static-body="shape: sphere; sphereRadius: 0.001"

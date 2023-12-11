@@ -40,9 +40,9 @@
                   x_axis: 0; z_axis: 2; height: 1; mirror:true;color:#C3ACD0;colorMatrix:#711DB0' position="0 2.25 0" > 
               </a-entity>
           </a-entity>
-          <a-entity id="placeMirror1" position="-2 -1.75 1" multiply-matrix="myMirrorId:placeMirror1; myEntityId:graphic1; archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"></a-entity>
-          <a-entity id="placeMirror2" position="0 -1.75 1" multiply-matrix="myMirrorId:placeMirror2; myEntityId:graphic2; archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"></a-entity>
-          <a-entity id="placeMirror3" position="2 -1.75 1" multiply-matrix="myMirrorId:placeMirror3; myEntityId:graphic3; archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"></a-entity>
+          <a-entity id="placeMirror1" position="-1.5 -1.75 1.5" multiply-matrix="myMirrorId:placeMirror1; myEntityId:graphic1; archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"></a-entity>
+          <a-entity id="placeMirror2" position="0 -1.75 1.5" multiply-matrix="myMirrorId:placeMirror2; myEntityId:graphic2; archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"></a-entity>
+          <a-entity id="placeMirror3" position="1.5 -1.75 1.5" multiply-matrix="myMirrorId:placeMirror3; myEntityId:graphic3; archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"></a-entity>
         
         </a-entity>
         
@@ -50,10 +50,10 @@
         <a-light type="point" intensity="0.3" position="0 3 0"></a-light>
         <a-light type="ambient" intensity="0.5" position="0 3 0"></a-light>
         
-        <a-entity position="0 3 3" movement-controls="fly:true; speed:0.1">
-            <a-entity sphere-collider="objects:a-box" super-hands hand-controls="hand: left"></a-entity>
+        <a-entity position="0 1 3" movement-controls="fly:true; speed:0.1">
+            <a-entity sphere-collider="objects:a-sphere" super-hands hand-controls="hand: left"></a-entity>
             <a-entity sphere-collider="objects:a-sphere" super-hands hand-controls="hand: right"></a-entity>
-            <a-entity camera look-controls 
+            <a-entity position="0 2 0" camera look-controls 
                     capture-mouse
                     cursor="rayOrigin:mouse"
                     static-body="shape: sphere; sphereRadius: 0.001"

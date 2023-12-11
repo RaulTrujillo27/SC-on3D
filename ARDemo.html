@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Basic Demo</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-babia-components/dist/aframe-babia-components.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.0.0/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.5/xlsx.full.min.js"></script>
+    <script src="dist/aframe-lounge-component.min.js"></script>
+    <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
+    <script src="format.js"></script>
+    <script src="rotation.js"></script>
+    <script src="moveball.js"></script>
+    <script src="axis.js"></script>
+    <script src="bubblesSimplified.js"></script>
+    <script src="axis-creator.js"></script>
+  </head>  
+  <body>    
+    
+    <a-scene >
+    
+
+      <!-- Bubbles data -->
+        
+        <a-entity lounge-plinth="width: 4; depth: 4; height: 0.25" lounge-staydown>
+            <a-entity bubbles-simplified='legend: true; legend_scale:0.1; axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
+            x_axis: 0; z_axis: 2; height: 1' position="0 2.25 0"> 
+            </a-entity>
+        </a-entity>
+
+        <a-entity multiply-matrix="archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"></a-entity>
+        
+      
+        <a-entity movement-controls="fly:true; speed:0.1">
+            <a-entity sphere-collider="objects:a-sphere" super-hands hand-controls="hand: left"></a-entity>
+            <a-entity sphere-collider="objects:a-sphere" super-hands hand-controls="hand: right"></a-entity>
+            <a-entity camera look-controls 
+                    capture-mouse
+                    cursor="rayOrigin:mouse"
+                    static-body="shape: sphere; sphereRadius: 0.001"
+                    super-hands="colliderEvent: raycaster-intersection;
+                                colliderEventProperty: els;
+                                colliderEndEvent:raycaster-intersection-cleared;
+                                colliderEndEventProperty: clearedEls;">
+            </a-entity>
+        </a-entity>
+    </a-scene>
+  </body>
+</html>
