@@ -101,7 +101,7 @@ AFRAME.registerComponent('bubbles-simplified', {
 
         radius_scale = radiusMax / radius
         this.chartEl = document.createElement('a-entity');
-        this.chartEl.classList.add('babiaxrChart')
+        this.chartEl.classList.add('xrChart')
         el.appendChild(this.chartEl)
     
         
