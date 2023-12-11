@@ -160,10 +160,7 @@ AFRAME.registerComponent('bubbles-simplified', {
             setTimeout(setGrabbable(bubbleEntity),5000);
             bubbleEntity.setAttribute('num-burbuja',i);
             i++;
-            //Prepare legend
-            if (data.legend) {
-               showLegend(data, bubbleEntity, bubble, el)
-            }
+            
         }
         for (let bubble of dataToPrint) {
             let xLabel = bubble[data.x_axis]
@@ -257,7 +254,7 @@ function generateBubble( height, radius, positionX, positionZ, proportionX, prop
 }
 
 function generateLegend(data, bubble, bubbleEntity) {
-    let text = 'Length:' + bubble[data.x_axis] + '\nHeight:' + bubble[data.height] + '\nWidth:' + bubble[data.z_axis];
+    let text = 'Length:' + bubble[data.x_axis].toFixed(4) + '\nHeight:' + bubble[data.height].toFixed(4) + '\nWidth:' + bubble[data.z_axis].toFixed(4);
 
     let width = 2;
     if (text.length > 16)
