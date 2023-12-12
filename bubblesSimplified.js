@@ -108,19 +108,20 @@ AFRAME.registerComponent('bubbles-simplified', {
         if(this.data.mirror && dataToPrintMatrix.length>0){
             this.data.mirror=false;
             let mirrorSpace = document.createElement('a-box');
-            el.appendChild(mirrorSpace);
+            
             mirrorSpace.setAttribute('opacity',0.1);
             mirrorSpace.setAttribute('width',widthMax/2);
             mirrorSpace.setAttribute('height',heightMax/2);
             mirrorSpace.setAttribute('depth',lengthMax/2);
             let userWantedPosition;
-            let parentId;
             if(mirrorPosition){
                 userWantedPosition = document.querySelector('#'+mirrorPosition);
             }
             if(userWantedPosition){         
+                console.log(userWantedPosition)
                 userWantedPosition.appendChild(mirrorSpace);
             }else{
+                el.appendChild(mirrorSpace);
                 mirrorSpace.setAttribute('position',{
                     x:lengthMax+mirrorSpace.getAttribute('width')/2,
                     y:-heightMax+mirrorSpace.getAttribute('height')/2,

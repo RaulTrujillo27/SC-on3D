@@ -56,7 +56,6 @@ AFRAME.registerComponent('mirror-positioning', {
   },
 
   tick: function(){
-    let mirrorPosition=this.mirror.getAttribute('position');;
     if(this.el.components.grabbable.grabbed){
       
       this.isGrabbed=true;
@@ -70,10 +69,10 @@ AFRAME.registerComponent('mirror-positioning', {
     }
     if(!this.el.components.grabbable.grabbed && this.isGrabbed){
       this.mirror.setAttribute('refrescar',true);
-      if(mirrorPosition.x !=this.mirror.getAttribute('position').x || mirrorPosition.y != this.mirror.getAttribute('position').y||mirrorPosition.z != this.mirror.getAttribute('position').z){
-        while (this.el.parentEl.parentEl.firstChild)
-            this.el.parentEl.parentEl.firstChild.remove();
-      }
+      
+      while (this.el.parentEl.parentEl.firstChild)
+          this.el.parentEl.parentEl.firstChild.remove();
+
       this.isGrabbed=false;
     }
   }
