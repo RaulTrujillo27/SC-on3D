@@ -1,6 +1,8 @@
 
 AFRAME.registerComponent('recalculate-graphic', {
-
+  schema:{
+    mirrorPositionId:{type:'string'}
+  },
   init: function () {
     this.isGrabbed=false;
   },
@@ -24,6 +26,10 @@ AFRAME.registerComponent('recalculate-graphic', {
         matrizdato[num_burbuja][0] = matrizdato[num_burbuja][0] + resta.x/proportionX;
         matrizdato[num_burbuja][1] = matrizdato[num_burbuja][1] + resta.y/proportionY;
         matrizdato[num_burbuja][2] = matrizdato[num_burbuja][2] + resta.z/proportionZ;
+        let mpId= this.data.mirrorPositionId;
+        if(this.data.mirrorPositionId){
+          document.querySelector('#espejo'+mpId).remove();
+        }
         window.pintarGrafico(null,matrizdato,this.el.parentEl.parentEl.getAttribute('id'));
       }
       
@@ -35,7 +41,7 @@ AFRAME.registerComponent('recalculate-graphic', {
 AFRAME.registerComponent('mirror-positioning', {
   schema:{
     repositionEntityId:{type:'string'}
-},
+  },
   init: function () {
     var mirrorBubbles;
     let repositionated = this.data.repositionEntityId;
@@ -69,9 +75,7 @@ AFRAME.registerComponent('mirror-positioning', {
     }
     if(!this.el.components.grabbable.grabbed && this.isGrabbed){
       this.mirror.setAttribute('refrescar',true);
-      
-      while (this.el.parentEl.parentEl.firstChild)
-          this.el.parentEl.parentEl.firstChild.remove();
+
 
       this.isGrabbed=false;
     }

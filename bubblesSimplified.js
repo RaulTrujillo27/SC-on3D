@@ -101,7 +101,6 @@ AFRAME.registerComponent('bubbles-simplified', {
 
         radius_scale = radiusMax / radius
         this.chartEl = document.createElement('a-entity');
-        this.chartEl.classList.add('xrChart')
         el.appendChild(this.chartEl)
     
         
@@ -118,7 +117,6 @@ AFRAME.registerComponent('bubbles-simplified', {
                 userWantedPosition = document.querySelector('#'+mirrorPosition);
             }
             if(userWantedPosition){         
-                console.log(userWantedPosition)
                 userWantedPosition.appendChild(mirrorSpace);
             }else{
                 el.appendChild(mirrorSpace);
@@ -130,6 +128,7 @@ AFRAME.registerComponent('bubbles-simplified', {
             }  
             let espejo = document.createElement('a-entity');
             mirrorSpace.appendChild(espejo);
+            mirrorSpace.id = "espejo"+mirrorPosition;
             espejo.setAttribute('bubbles-simplified',{'graphicPosition':graphicPosition,'mirrorPosition':mirrorPosition,'radiusMax': radiusMax/2, 'heightMax':heightMax/4, 'lengthMax':lengthMax/4, 
                 'widthMax':widthMax/4,'data':[],'dataMatrix':data.dataMatrix,'colorMatrix':colorMatrix,'x_axis': 0, 'z_axis': 2, 'height': 1,'onMirror':true});
             this.data.mirror=true;
@@ -156,7 +155,7 @@ AFRAME.registerComponent('bubbles-simplified', {
                 bubbleEntity.setAttribute('mirror-positioning',{'repositionEntityId':graphicPosition});
             }else{
                 bubbleEntity.setAttribute('posicionInicial',bubbleEntity.components.position.attrValue.x +"," + bubbleEntity.components.position.attrValue.y  +"," + bubbleEntity.components.position.attrValue.z );
-                bubbleEntity.setAttribute('recalculate-graphic','');
+                bubbleEntity.setAttribute('recalculate-graphic',{'mirrorPositionId':mirrorPosition});
             }
             setTimeout(setGrabbable(bubbleEntity),5000);
             bubbleEntity.setAttribute('num-burbuja',i);
@@ -279,7 +278,7 @@ function generateLegend(data, bubble, bubbleEntity) {
         'width': 6,
         'color': 'black'
     });
-    entity.classList.add("babiaxrLegend")
+    entity.classList.add("Legend")
     entity.setAttribute('babia-lookat', data.legend_lookat);
     entity.setAttribute('scale',{x: data.legend_scale, y: data.legend_scale, z: data.legend_scale});
     return entity;
