@@ -11,10 +11,8 @@
     <script src="dist/aframe-lounge-component.min.js"></script>
     <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
     <script src="format.js"></script>
-    <script src="rotation.js"></script>
     <script src="moveball.js"></script>
-    <script src="axis.js"></script>
-    <script src="bubblesSimplified.js"></script>
+    <script src="bubbles-star-coordinates.js"></script>
     <script src="axis-creator.js"></script>
   </head>  
   <body>    
@@ -26,23 +24,23 @@
       <!-- Bubbles data -->
         
           <a-entity position="-6 2 -5" lounge-plinth="width: 4; depth: 4; height: 0.25" lounge-staydown>
-              <a-entity id="graphic1" bubbles-simplified='axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
+              <a-entity id="graphic1" bubbles-star-coordinates='axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
                   x_axis: 0; z_axis: 2; height: 1; mirror:true;color:#CD5C08;colorMatrix:#F4CE14' position="0 2.25 0" > 
               </a-entity>
           </a-entity>
           <a-entity position="0 2 -5" lounge-plinth="width: 4; depth: 4; height: 0.25" lounge-staydown>
-              <a-entity id="graphic2" bubbles-simplified='axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
+              <a-entity id="graphic2" bubbles-star-coordinates='axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
                   x_axis: 0; z_axis: 2; height: 1; mirror:true' position="0 2.25 0" > 
               </a-entity>
           </a-entity>
           <a-entity position="6 2 -5" lounge-plinth="width: 4; depth: 4; height: 0.25" lounge-staydown>
-              <a-entity id="graphic3" bubbles-simplified=' axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
+              <a-entity id="graphic3" bubbles-star-coordinates=' axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
                   x_axis: 0; z_axis: 2; height: 1; mirror:true;color:#C3ACD0;colorMatrix:#711DB0' position="0 2.25 0" > 
               </a-entity>
           </a-entity>
-          <a-entity id="placeMirror1" position="-1.5 -1.75 1.5" multiply-matrix="myMirrorId:placeMirror1; myEntityId:graphic1; archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"></a-entity>
-          <a-entity id="placeMirror2" position="0 -1.75 1.5" multiply-matrix="myMirrorId:placeMirror2; myEntityId:graphic2; archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"></a-entity>
-          <a-entity id="placeMirror3" position="1.5 -1.75 1.5" multiply-matrix="myMirrorId:placeMirror3; myEntityId:graphic3; archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"></a-entity>
+          <a-entity id="placeMirror1" position="-1.5 -1.75 1.5" toprint-config="myMirrorId:placeMirror1; myEntityId:graphic1; archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"></a-entity>
+          <a-entity id="placeMirror2" position="0 -1.75 1.5" toprint-config="myMirrorId:placeMirror2; myEntityId:graphic2; archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"></a-entity>
+          <a-entity id="placeMirror3" position="1.5 -1.75 1.5" toprint-config="myMirrorId:placeMirror3; myEntityId:graphic3; archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"></a-entity>
         
         </a-entity>
         

@@ -17,7 +17,7 @@ AFRAME.registerComponent('recalculate-graphic', {
       let finalPosition = this.el.getAttribute('position');
       let previousBubblePosition = this.el.getAttribute('posicionInicial').split(",");
       if(finalPosition.x!=previousBubblePosition[0] ||finalPosition.y!=previousBubblePosition[1] ||finalPosition.z!=previousBubblePosition[2]){
-        let matrizdato = JSON.parse(this.el.parentEl.parentEl.getAttribute('bubbles-simplified').dataMatrix);
+        let matrizdato = JSON.parse(this.el.parentEl.parentEl.getAttribute('bubbles-star-coordinates').dataMatrix);
         let num_burbuja = this.el.getAttribute('num-burbuja');
         let proportionX = this.el.getAttribute('proportionX');
         let proportionY = this.el.getAttribute('proportionY');

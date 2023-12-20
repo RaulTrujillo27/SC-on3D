@@ -11,10 +11,8 @@
     <script src="dist/aframe-lounge-component.min.js"></script>
     <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
     <script src="format.js"></script>
-    <script src="rotation.js"></script>
     <script src="moveball.js"></script>
-    <script src="axis.js"></script>
-    <script src="bubblesSimplified.js"></script>
+    <script src="bubbles-star-coordinates.js"></script>
     <script src="axis-creator.js"></script>
   </head>  
   <body>    
@@ -28,12 +26,11 @@
       <!-- Bubbles data -->
         
         <a-entity position="0 2 -2" lounge-plinth="width: 4; depth: 4; height: 0.25" lounge-staydown>
-          <a-entity bubbles-simplified='axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
+          <a-entity bubbles-star-coordinates='axis:false; radiusMax: 0.05;  heightMax:2; lengthMax:2; widthMax:2; data:[]; dataMatrix:[];
             x_axis: 0; z_axis: 2; height: 1' position="0 2.25 0"> 
           </a-entity>
         </a-entity>
 
-        <!--a-entity id="modificadorEscala" position="-1.5 -1 0" create-axis></a-entity-->
         <!--SELECTORES INIT-->
         <a-box position="-1 -1.95 0"color ="black" width="1.05" height="0.55" depth="0.02" rotation="-15 0 0">
           <a-box position="0 0 0.02"color ="#F0DBAF" width="1" height="0.5" depth="0.02" rotation="0 0 0">
@@ -46,7 +43,7 @@
               height="0.1"
               width="0.1"
               depth="0.1"
-              multiply-matrix="withButton:true; archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"
+              toprint-config="withButton:true; archivo: archivosjson\cereal_data_no_missing.json; matriz: archivosjson\cereal_no_missing_matriz_PCA.json"
               >
             </a-box>
             <a-text position="-0.27 0.15 0.01" value="-   Cereals" color="black" width="2"></a-text>
@@ -59,7 +56,7 @@
               height="0.1"
               width="0.1"
               depth="0.1"
-              multiply-matrix="withButton:true; archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"
+              toprint-config="withButton:true; archivo: archivosjson\olives_data.json; matriz: archivosjson\olives_matriz_LDA.json"
               >
             </a-box>
             <a-text position="-0.27 0 0.01" value="-   Olives" color="black" width="2"></a-text>
@@ -72,7 +69,7 @@
               height="0.1"
               width="0.1"
               depth="0.1"
-              multiply-matrix="withButton:true; archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"
+              toprint-config="withButton:true; archivo: archivosjson\parkinsons_train_data.json; matriz: archivosjson\parkinsons_train_matriz_PCA.json"
               >
             </a-box>
             <a-text position="-0.27 -0.15 0.01" value="-   Parkinson" color="black" width="2"></a-text>

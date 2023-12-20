@@ -1,5 +1,5 @@
 
-AFRAME.registerComponent('bubbles-simplified', {
+AFRAME.registerComponent('bubbles-star-coordinates', {
     schema: {
         data: { type: 'string' },
         dataMatrix: {type:'string'},
@@ -9,9 +9,6 @@ AFRAME.registerComponent('bubbles-simplified', {
         color: {type:'string',default:'#7C93C3'},
         colorMatrix: {type:'string',default:'#c1121f'},
         from: { type: 'string' },
-        legend: { type: 'boolean' },
-        legend_lookat: { type: 'string', default: "[camera]" },
-        legend_scale: { type: 'number', default: 1 },
         axis: { type: 'boolean', default: true },
         heightMax: { type: 'number' ,default:10},
         lengthMax: { type: 'number' ,default:10},
@@ -129,7 +126,7 @@ AFRAME.registerComponent('bubbles-simplified', {
             let espejo = document.createElement('a-entity');
             mirrorSpace.appendChild(espejo);
             mirrorSpace.id = "espejo"+mirrorPosition;
-            espejo.setAttribute('bubbles-simplified',{'graphicPosition':graphicPosition,'mirrorPosition':mirrorPosition,'radiusMax': radiusMax/2, 'heightMax':heightMax/4, 'lengthMax':lengthMax/4, 
+            espejo.setAttribute('bubbles-star-coordinates',{'graphicPosition':graphicPosition,'mirrorPosition':mirrorPosition,'radiusMax': radiusMax/2, 'heightMax':heightMax/4, 'lengthMax':lengthMax/4, 
                 'widthMax':widthMax/4,'data':[],'dataMatrix':data.dataMatrix,'colorMatrix':colorMatrix,'x_axis': 0, 'z_axis': 2, 'height': 1,'onMirror':true});
             this.data.mirror=true;
         }
@@ -147,7 +144,6 @@ AFRAME.registerComponent('bubbles-simplified', {
             stepZ = zLabel * proportionZ
             zLabels.push(zLabel)
 
-            
             
             let bubbleEntity = generateBubble(height,radius, stepX, stepZ, proportionX, proportionY, proportionZ, radius_scale, colorMatrix);
             this.chartEl.appendChild(bubbleEntity);
@@ -183,10 +179,7 @@ AFRAME.registerComponent('bubbles-simplified', {
             let bubbleEntity = generateBubble(height,radius, stepX, stepZ,proportionX,proportionY,proportionZ, radius_scale,color);
             this.chartEl.appendChild(bubbleEntity);
             
-            //Prepare legend
-            if (data.legend) {
-               showLegend(data, bubbleEntity, bubble, el)
-            }
+            
         }
     
         //Print axis
@@ -253,49 +246,6 @@ function generateBubble( height, radius, positionX, positionZ, proportionX, prop
     return entity;
 }
 
-function generateLegend(data, bubble, bubbleEntity) {
-    let text = 'Length:' + bubble[data.x_axis].toFixed(4) + '\nHeight:' + bubble[data.height].toFixed(4) + '\nWidth:' + bubble[data.z_axis].toFixed(4);
-
-    let width = 2;
-    if (text.length > 16)
-        width = text.length / 8;
-
-    let bubblePosition = bubbleEntity.getAttribute('position')
-    let bubbleRadius = parseFloat(bubbleEntity.getAttribute('radius'))
-    let entity = document.createElement('a-plane');
-    entity.setAttribute('position', {
-        x: bubblePosition.x, 
-        y: bubblePosition.y + bubbleRadius + 0.1,
-        z: bubblePosition.z + 0.1
-    });
-    entity.setAttribute('rotation', { x: 0, y: 0, z: 0 });
-    entity.setAttribute('height', '1');
-    entity.setAttribute('width', width);
-    entity.setAttribute('color', 'white');
-    entity.setAttribute('text', {
-        'value': text,
-        'align': 'center',
-        'width': 6,
-        'color': 'black'
-    });
-    entity.classList.add("Legend")
-    entity.setAttribute('babia-lookat', data.legend_lookat);
-    entity.setAttribute('scale',{x: data.legend_scale, y: data.legend_scale, z: data.legend_scale});
-    return entity;
-}
-
-function showLegend(data, bubbleEntity, bubble, element) {
-    bubbleEntity.addEventListener('mouseenter', function () {
-        this.setAttribute('scale', { x: 1.1, y: 1.1, z: 1.1 });
-        legend = generateLegend(data, bubble, bubbleEntity);
-        element.appendChild(legend);
-    });
-
-    bubbleEntity.addEventListener('mouseleave', function () {
-        this.setAttribute('scale', { x: 1, y: 1, z: 1 });
-        element.removeChild(legend);
-    });
-}
 let parseJson = (json) => {
     let object;
     if (typeof (json) === 'string' || json instanceof String) {

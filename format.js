@@ -53,8 +53,7 @@ function multiply(a, b) {
 
 window.pintarGrafico = function(archive,matrix,myEntityId,myMirrorId){
   var burbujas;
-  var graficosOnScreen = Array.from(document.querySelectorAll('[bubbles-simplified]')).filter(element => element.getAttribute('bubbles-simplified').onMirror != true);
-
+  var graficosOnScreen = Array.from(document.querySelectorAll('[bubbles-star-coordinates]')).filter(element => element.getAttribute('bubbles-star-coordinates').onMirror != true);
   if(myEntityId && graficosOnScreen.length>1){
     //Tendremos más de un gráfico en la escena
     burbujas = document.querySelector('#'+myEntityId);
@@ -67,7 +66,7 @@ window.pintarGrafico = function(archive,matrix,myEntityId,myMirrorId){
     }
   }else{
     //Solo tenemos un gráfico en la escena
-    burbujas = document.querySelector('[bubbles-simplified]'); 
+    burbujas = document.querySelector('[bubbles-star-coordinates]'); 
     if(archive == null ){
       archive = archivo_actual;
    }else{
@@ -76,11 +75,11 @@ window.pintarGrafico = function(archive,matrix,myEntityId,myMirrorId){
     
   }
   var m  = multiply(archive,matrix);
-  burbujas.setAttribute('bubbles-simplified',{'graphicPosition':myEntityId,'mirrorPosition':myMirrorId,'axis':true,'data':JSON.stringify(m),'dataMatrix':JSON.stringify(matrix)});
+  burbujas.setAttribute('bubbles-star-coordinates',{'graphicPosition':myEntityId,'mirrorPosition':myMirrorId,'axis':true,'data':JSON.stringify(m),'dataMatrix':JSON.stringify(matrix)});
 }
 
 
-AFRAME.registerComponent('multiply-matrix', {
+AFRAME.registerComponent('toprint-config', {
     schema:{
         myMirrorId:{type:'string'},
         myEntityId:{type:'string'},
@@ -90,29 +89,28 @@ AFRAME.registerComponent('multiply-matrix', {
     },
     init: function(){
       var  archivo = this.data.archivo;
-      var  matrizdato = this.data.matriz;
+      var  matriz = this.data.matriz;
       var  myEntityId = this.data.myEntityId;
       var  myMirrorId = this.data.myMirrorId;
-      var withButton = this.data.withButton;
-
+      var  withButton = this.data.withButton;
       if(withButton){
         this.el.addEventListener('click', function(){
-          formatfiles(archivo,matrizdato,myEntityId,myMirrorId);
+          formatfiles(archivo,matriz,myEntityId,myMirrorId);
         })    
       }else{
-        formatfiles(archivo,matrizdato,myEntityId,myMirrorId);
+        formatfiles(archivo,matriz,myEntityId,myMirrorId);
       }
         
     }             
   });
 
-function formatfiles(archivo,matrizdato,myEntityId,myMirrorId){
+function formatfiles(archivo,matriz,myEntityId,myMirrorId){
   fetch(archivo)
     .then(function(response) {
       return response.json();
     })
     .then(function(archive) {
-      fetch(matrizdato)
+      fetch(matriz)
         .then(function(response) {
           return response.json();
         })

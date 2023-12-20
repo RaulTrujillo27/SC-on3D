@@ -100,11 +100,6 @@ AFRAME.registerComponent('axis-y', {
     }
 });      
 
-/*
- * BabiaXR X Axis component
- *
- * Builds a X axis for a chart
- */
 AFRAME.registerComponent('axis-x', {
     schema: {
         length: { type: 'number' },
@@ -126,11 +121,7 @@ AFRAME.registerComponent('axis-x', {
 
 });
 
-/*
- * BabiaXR X Axis component
- *
- * Builds a X axis for a chart
- */
+
 AFRAME.registerComponent('axis-z', {
     schema: {
         length: { type: 'number' },
@@ -175,3 +166,12 @@ function updateValues(el,data,length,oldData,minSteps){
         el.axis.updateLabels(length,ticks, labels, data.align);
     };
 }
+
+
+AFRAME.registerComponent('posicion-anterior', {
+    
+  
+    init: function () {
+      
+    }
+  }); 
