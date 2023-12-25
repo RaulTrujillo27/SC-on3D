@@ -8,7 +8,6 @@ AFRAME.registerComponent('bubbles-star-coordinates', {
         z_axis: { type: 'string', default: 'z_axis' },
         color: {type:'string',default:'#7C93C3'},
         colorMatrix: {type:'string',default:'#c1121f'},
-        from: { type: 'string' },
         axis: { type: 'boolean', default: true },
         heightMax: { type: 'number' ,default:10},
         lengthMax: { type: 'number' ,default:10},
@@ -211,7 +210,7 @@ AFRAME.registerComponent('bubbles-star-coordinates', {
     },
 
     /*
-    * Process data obtained from producer
+    * Process data obtained  producer
     */
     processData: function (data,dataMatrix) {
         this.newData = data;
@@ -264,20 +263,7 @@ let updateFunction = (self, oldData) => {
         let _data = parseJson(data.data);
         let _dataMatrix = parseJson(data.dataMatrix);
         self.processData(_data,_dataMatrix);
-    } else if (data.from !== oldData.from) {
-        if (self.slice_array) {
-            self.slice_array = [];
-        }
-        // Unregister from old producer
-        if (self.prodComponent) {
-            self.prodComponent.notiBuffer.unregister(self.notiBufferId);
-        };
-        self.prodComponent = findProdComponent(data, el);
-        if (self.prodComponent.notiBuffer) {
-            self.notiBufferId = self.prodComponent.notiBuffer
-                .register(self.processData.bind(self));
-        }
-    }
+    } 
     // If changed whatever, re-print with the current data
     else if (data !== oldData && self.newData || data !== oldData && self.newDataMatrix) {
         if (self.slice_array) {
