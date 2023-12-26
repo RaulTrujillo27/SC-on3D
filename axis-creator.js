@@ -167,11 +167,3 @@ function updateValues(el,data,length,oldData,minSteps){
     };
 }
 
-
-AFRAME.registerComponent('posicion-anterior', {
-    
-  
-    init: function () {
-      
-    }
-  }); 
